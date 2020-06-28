@@ -1,0 +1,17 @@
+apiVersion: rbac.istio.io/v1alpha1
+kind: ServiceRole
+metadata:
+  name: owner
+  labels:
+    type: tenant-template
+spec:
+  rules:
+    - services:
+        - "*"
+      paths:
+        - "/tenant/{tenant}/*"
+        - "*/tenant/{tenant}"
+        - "*/tenant/{tenant}/owner"
+        - "*/tenant/{tenant}/maintainer"
+        - "*/tenant/{tenant}/developer"
+      methods: ["*"]

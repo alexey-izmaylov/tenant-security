@@ -1,0 +1,382 @@
+= Tenant Security API Documentation
+Alexey Izmaylov <aleksey.izmaylove@gmail.com>
+1.0.0
+:toc: left
+:sectnums:
+
+== Introduction
+
+This is the documentation of tenant-security microservice.
+
+== Tenants API
+
+Collection of CRUD API endpoints used to manipulate tenants registered in the application.
+
+=== Get All Tenants
+
+Obtains a list of tenants registered in the application.
+
+==== Response Body
+
+include::{snippets}/tenants/get-all-tenants/response-fields.adoc[]
+
+==== Sample Request
+
+include::{snippets}/tenants/get-all-tenants/http-request.adoc[]
+
+==== Sample Response
+
+include::{snippets}/tenants/get-all-tenants/http-response.adoc[]
+
+==== CURL sample
+
+include::{snippets}/tenants/get-all-tenants/curl-request.adoc[]
+
+=== Get Tenant
+
+Obtains a specific tenant registered in the application by its unique name.
+
+include::{snippets}/tenants/get-tenant/path-parameters.adoc[]
+
+==== Response Body
+
+include::{snippets}/tenants/get-tenant/response-fields.adoc[]
+
+==== Sample Request
+
+include::{snippets}/tenants/get-tenant/http-request.adoc[]
+
+==== Sample Response
+
+include::{snippets}/tenants/get-tenant/http-response.adoc[]
+
+==== CURL sample
+
+include::{snippets}/tenants/get-tenant/curl-request.adoc[]
+
+=== Create Tenant
+
+Creates a tenant by JSON representation.
+
+==== Request Body
+
+include::{snippets}/tenants/post-tenant/request-fields.adoc[]
+
+==== Response Body
+
+include::{snippets}/tenants/post-tenant/response-fields.adoc[]
+
+==== Sample Request
+
+include::{snippets}/tenants/post-tenant/http-request.adoc[]
+
+==== Sample Response
+
+include::{snippets}/tenants/post-tenant/http-response.adoc[]
+
+==== CURL sample
+
+include::{snippets}/tenants/post-tenant/curl-request.adoc[]
+
+=== Update Tenant
+
+Updates a tenant by name and JSON representation.
+
+include::{snippets}/tenants/update-tenant/path-parameters.adoc[]
+
+==== Request Body
+
+include::{snippets}/tenants/update-tenant/request-fields.adoc[]
+
+==== Response Body
+
+include::{snippets}/tenants/update-tenant/response-fields.adoc[]
+
+==== Sample Request
+
+include::{snippets}/tenants/update-tenant/http-request.adoc[]
+
+==== Sample Response
+
+include::{snippets}/tenants/update-tenant/http-response.adoc[]
+
+==== CURL sample
+
+include::{snippets}/tenants/update-tenant/curl-request.adoc[]
+
+=== Delete Tenant
+
+Deletes a specific tenant registered in the application by its unique name.
+
+include::{snippets}/tenants/delete-tenant/path-parameters.adoc[]
+
+==== Sample Request
+
+include::{snippets}/tenants/delete-tenant/http-request.adoc[]
+
+==== Sample Response
+
+include::{snippets}/tenants/delete-tenant/http-response.adoc[]
+
+==== CURL sample
+
+include::{snippets}/tenants/delete-tenant/curl-request.adoc[]
+
+== Users API
+
+Collection of CRUD API endpoints used to manipulate users registered in the application.
+
+=== Get User
+
+Obtains a specific user registered in the application by its unique id.
+
+include::{snippets}/users/get-user/path-parameters.adoc[]
+
+==== Response Body
+
+include::{snippets}/users/get-user/response-fields.adoc[]
+
+==== Sample Request
+
+include::{snippets}/users/get-user/http-request.adoc[]
+
+==== Sample Response
+
+include::{snippets}/users/get-user/http-response.adoc[]
+
+==== CURL sample
+
+include::{snippets}/users/get-user/curl-request.adoc[]
+
+=== Create User
+
+Creates a user by JSON representation.
+
+==== Request Body
+
+include::{snippets}/users/post-user/request-fields.adoc[]
+
+==== Response Body
+
+include::{snippets}/users/post-user/response-fields.adoc[]
+
+==== Sample Request
+
+include::{snippets}/users/post-user/http-request.adoc[]
+
+==== Sample Response
+
+include::{snippets}/users/post-user/http-response.adoc[]
+
+==== CURL sample
+
+include::{snippets}/users/post-user/curl-request.adoc[]
+
+=== Delete User
+
+Deletes a specific user registered in the application by its unique id.
+
+include::{snippets}/users/delete-user/path-parameters.adoc[]
+
+==== Sample Request
+
+include::{snippets}/users/delete-user/http-request.adoc[]
+
+==== Sample Response
+
+include::{snippets}/users/delete-user/http-response.adoc[]
+
+==== CURL sample
+
+include::{snippets}/users/delete-user/curl-request.adoc[]
+
+=== Get Tenant Assignments
+
+Obtains a list of users having access to a tenant.
+
+==== Request Parameters
+
+include::{snippets}/users/get-tenant-assignments/request-parameters.adoc[]
+
+==== Response Body:
+
+include::{snippets}/users/get-tenant-assignments/response-fields.adoc[]
+
+==== Sample Request
+
+include::{snippets}/users/get-tenant-assignments/http-request.adoc[]
+
+==== Sample Response
+
+include::{snippets}/users/get-tenant-assignments/http-response.adoc[]
+
+==== CURL sample
+
+include::{snippets}/users/get-tenant-assignments/curl-request.adoc[]
+
+=== Get User Assignments
+
+Obtains a list of tenants user has access to.
+
+include::{snippets}/users/get-user-assignments/path-parameters.adoc[]
+
+==== Response Body
+
+include::{snippets}/users/get-user-assignments/response-fields.adoc[]
+
+==== Sample Request
+
+include::{snippets}/users/get-user-assignments/http-request.adoc[]
+
+==== Sample Response
+
+include::{snippets}/users/get-user-assignments/http-response.adoc[]
+
+==== CURL sample
+
+include::{snippets}/users/get-user-assignments/curl-request.adoc[]
+
+=== Assign User To Tenant
+
+Grant access to tenants for user.
+
+include::{snippets}/users/assign-tenant-to-user/path-parameters.adoc[]
+
+==== Sample Request
+
+include::{snippets}/users/assign-tenant-to-user/http-request.adoc[]
+
+==== Sample Response
+
+include::{snippets}/users/assign-tenant-to-user/http-response.adoc[]
+
+==== CURL sample
+
+include::{snippets}/users/assign-tenant-to-user/curl-request.adoc[]
+
+=== Release User From Tenant
+
+Deny access to tenant for user.
+
+include::{snippets}/users/evict-user-from-tenant/path-parameters.adoc[]
+
+==== Sample Request
+
+include::{snippets}/users/evict-user-from-tenant/http-request.adoc[]
+
+==== Sample Response
+
+include::{snippets}/users/evict-user-from-tenant/http-response.adoc[]
+
+==== CURL sample
+
+include::{snippets}/users/evict-user-from-tenant/curl-request.adoc[]
+
+=== Search User By Field
+
+Searches users by exact field(s).
+Result elements are limited to a maximum of 100.
+
+==== Request Parameters
+
+include::{snippets}/users/search-by-all/request-parameters.adoc[]
+
+==== Response Body
+
+include::{snippets}/users/search-by-all/response-fields.adoc[]
+
+==== Sample Request
+
+include::{snippets}/users/search-by-all/http-request.adoc[]
+
+==== Sample Response
+
+include::{snippets}/users/search-by-all/http-response.adoc[]
+
+==== CURL sample
+
+include::{snippets}/users/search-by-all/curl-request.adoc[]
+
+=== Search User By String
+
+Searches users by string contained in first or last name, email, username.
+Result elements are limited to a maximum of 100.
+
+==== Request Parameters
+
+include::{snippets}/users/search-by-string/request-parameters.adoc[]
+
+==== Response Body
+
+include::{snippets}/users/search-by-string/response-fields.adoc[]
+
+==== Sample Request
+
+include::{snippets}/users/search-by-string/http-request.adoc[]
+
+==== Sample Response
+
+include::{snippets}/users/search-by-string/http-response.adoc[]
+
+==== CURL sample
+
+include::{snippets}/users/search-by-string/curl-request.adoc[]
+
+== Security Context API
+
+Endpoints of session aware operations.
+JWT token is extracted from Authorization header.
+This API does not verify token signature.
+
+=== Get User Security Context
+
+Obtains an information about current user and available tenants.
+
+==== Request Headers
+
+include::{snippets}/context/get-context-by-token/request-headers.adoc[]
+
+==== Response Body
+
+include::{snippets}/context/get-context-by-token/response-fields.adoc[]
+
+==== Sample Request
+
+include::{snippets}/context/get-context-by-token/http-request.adoc[]
+
+==== Sample Response
+
+include::{snippets}/context/get-context-by-token/http-response.adoc[]
+
+==== CURL sample
+
+include::{snippets}/context/get-context-by-token/curl-request.adoc[]
+
+=== Create Tenant And Assign
+
+Creates tenant and assign current user with default role.
+See DEFAULT_ROLE property.
+
+==== Request Headers
+
+include::{snippets}/context/create-tenant-and-assign-to-current-user/request-headers.adoc[]
+
+==== Request Body
+
+include::{snippets}/context/create-tenant-and-assign-to-current-user/request-fields.adoc[]
+
+==== Response Body
+
+include::{snippets}/context/create-tenant-and-assign-to-current-user/response-fields.adoc[]
+
+==== Sample Request
+
+include::{snippets}/context/create-tenant-and-assign-to-current-user/http-request.adoc[]
+
+==== Sample Response
+
+include::{snippets}/context/create-tenant-and-assign-to-current-user/http-response.adoc[]
+
+==== CURL sample
+
+include::{snippets}/context/create-tenant-and-assign-to-current-user/curl-request.adoc[]

@@ -1,0 +1,584 @@
+openapi: 3.0.1
+info:
+  title: tenant-security
+  description: "Parent pom providing dependency and plugin management for applications\n\
+    \t\tbuilt with Maven"
+  version: 1.0.0-SNAPSHOT
+servers:
+- url: http://localhost
+tags: []
+paths:
+  /context:
+    get:
+      tags:
+      - context
+      operationId: context/get-context-by-token
+      parameters:
+      - name: Authorization
+        in: header
+        description: JSON Web Token
+        required: true
+        schema:
+          type: string
+        example: Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJVNHQxSmhHVGRsZ2VuMXI4QXVWbVI1ckc4UkNsYlJNM3U5dEh5MGlvckRFIn0.eyJleHAiOjE1OTI3NDY2MDEsImlhdCI6MTU5Mjc0NjMwMSwianRpIjoiMWY1ZDE4YmQtZGUxZC00MTU0LWEzMWYtNmEzMWMwOWI1MmM4IiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDozMjc3OS9hdXRoL3JlYWxtcy90ZXN0IiwiYXVkIjoiYWNjb3VudCIsInN1YiI6Ijc5MWRhZDYwLWZjZDQtNDVhZC05YTQ4LTQxOTRiYWQ1Yzc4ZiIsInR5cCI6IkJlYXJlciIsImF6cCI6ImZyb250ZW5kIiwic2Vzc2lvbl9zdGF0ZSI6IjZhZGRlZGIyLTA2NzQtNDczOC1hZTAyLWZjZTY3NDA2OWRmOSIsImFjciI6IjEiLCJyZXNvdXJjZV9hY2Nlc3MiOnsiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19fSwic2NvcGUiOiJlbWFpbCBwcm9maWxlIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsInJvbGVzIjpbIm9mZmxpbmVfYWNjZXNzIiwidW1hX2F1dGhvcml6YXRpb24iLCJmZmUyNWU4ZC1kN2MzLTRiNDctYjQ2Mi04OWFiY2Q1MGVlNjQuZGV2ZWxvcGVyIl0sIm5hbWUiOiJBbGV4ZXkgSXptYXlsb3YiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiI3MTA5NGQ1NC1mMzM2LTRhYjAtODBmOC00MDEzNTZiOTU5MjdAZ21haWwuY29tIiwiZ2l2ZW5fbmFtZSI6IkFsZXhleSIsImZhbWlseV9uYW1lIjoiSXptYXlsb3YiLCJlbWFpbCI6IjcxMDk0ZDU0LWYzMzYtNGFiMC04MGY4LTQwMTM1NmI5NTkyN0BnbWFpbC5jb20ifQ.a6b58si7ZKAWzFCIdhF1fw80h1DDgaKo8Fx02zaydODjAN1N9KeDiVkYJRE5VqC0zPvO3WhVAdWnuA-br8ZHDnc_laXMi_Q7Ools218Rufi8aPuiadPdzBaBgSZT_C94ujph70NFgQnyG7ZV1BKxd2B4qnB5c41YeQFZCF4O7T1T20_LPHQoJNCo8DQztKMuBtUCbC3e4qgFxhN5CzYHwhQ4icbvdcT_spN_2HzLW8p1ZoZe4mJ6DtCDCEqwJjl8ot3sTHZIxze3F8G5b4GE_xuT9GWxRJ50pXjb-26zkWkVkoHTryPfLp2tZrB5r0Tv1Yioy43jsTHdNximBGmquw
+      responses:
+        200:
+          description: "200"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/context-1041425929'
+              examples:
+                context/get-context-by-token:
+                  value: "{\r\n  \"user\" : {\r\n    \"id\" : \"791dad60-fcd4-45ad-9a48-4194bad5c78f\"\
+                    ,\r\n    \"email\" : \"71094d54-f336-4ab0-80f8-401356b95927@gmail.com\"\
+                    ,\r\n    \"firstName\" : \"Alexey\",\r\n    \"lastName\" : \"\
+                    Izmaylov\",\r\n    \"credential\" : \"*****\"\r\n  },\r\n  \"\
+                    tenants\" : [ {\r\n    \"name\" : \"ffe25e8d-d7c3-4b47-b462-89abcd50ee64\"\
+                    ,\r\n    \"displayedName\" : \"tenant 1..3\",\r\n    \"description\"\
+                    \ : \"1..3\"\r\n  } ]\r\n}"
+      security:
+      - bearerAuthJWT: []
+  /context/tenant:
+    post:
+      tags:
+      - context
+      operationId: context/create-tenant-and-assign-to-current-user
+      parameters:
+      - name: Authorization
+        in: header
+        description: JSON Web Token
+        required: true
+        schema:
+          type: string
+        example: Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJVNHQxSmhHVGRsZ2VuMXI4QXVWbVI1ckc4UkNsYlJNM3U5dEh5MGlvckRFIn0.eyJleHAiOjE1OTI3NDY2MDIsImlhdCI6MTU5Mjc0NjMwMiwianRpIjoiMjI0ZTdkMDYtNGRhNy00MWIwLTg3ODQtNmRjYzRmMDM1YjA3IiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDozMjc3OS9hdXRoL3JlYWxtcy90ZXN0IiwiYXVkIjoiYWNjb3VudCIsInN1YiI6IjJhNDljMmUzLTY1NjYtNGFhNy1hMWEwLTBiNTU0YzgzMGFiYyIsInR5cCI6IkJlYXJlciIsImF6cCI6ImZyb250ZW5kIiwic2Vzc2lvbl9zdGF0ZSI6IjYxMGQ4MDlkLWM4MjYtNDgwZC05ODY3LThmMzAyMzRhZDI4OSIsImFjciI6IjEiLCJyZXNvdXJjZV9hY2Nlc3MiOnsiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19fSwic2NvcGUiOiJlbWFpbCBwcm9maWxlIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsInJvbGVzIjpbIm9mZmxpbmVfYWNjZXNzIiwidW1hX2F1dGhvcml6YXRpb24iXSwibmFtZSI6IkFsZXhleSBJem1heWxvdiIsInByZWZlcnJlZF91c2VybmFtZSI6IjJmZTM1YjNmLTBlYjctNGYzMS05NmFhLTZkZTJlZjBkYTY1ZkBnbWFpbC5jb20iLCJnaXZlbl9uYW1lIjoiQWxleGV5IiwiZmFtaWx5X25hbWUiOiJJem1heWxvdiIsImVtYWlsIjoiMmZlMzViM2YtMGViNy00ZjMxLTk2YWEtNmRlMmVmMGRhNjVmQGdtYWlsLmNvbSJ9.jnyzDG-0_5agXXq10i--BIVeKLk3Xfz1h_lmRkwodJwaFDLmgKInmG67YUI_ad9Xxg5IBR1QsTO4rNiL7cunLeWay6gRnu6V04KRK33hrQ6Ak3v3nTMlIhkrmqqPLwkEgbuqa0jGn2xDspy3HiBOGhSXQmINPFre4WjdtnBbVc7exTzrQSElKKSSsxMqV77Zqk-yQUfNtKb6almrJGsZFWqlcS-lpExRQpe6aMC3N0zTbDlWCicAi2WZUz2stMkAtVRAu_f1smb21xi8g4DQRCQqkW0pgrZIZyPcCntMi9Pkf1DmntlgFponWHDXNAmwjUsBfurb9XDzu3aSWMj5Tg
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/tenant-name-1072526318'
+            examples:
+              context/create-tenant-and-assign-to-current-user:
+                value: "{\r\n  \"name\" : \"493c08d3-95b8-4139-b88c-198de0527867\"\
+                  ,\r\n  \"displayedName\" : \"493c08d3-95b8-4139-b88c-198de0527867\"\
+                  ,\r\n  \"description\" : \"\"\r\n}"
+      responses:
+        200:
+          description: "200"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tenant-name-1072526318'
+              examples:
+                context/create-tenant-and-assign-to-current-user:
+                  value: "{\r\n  \"name\" : \"034d4853-2630-4f37-935d-00e4f2e13a1b\"\
+                    ,\r\n  \"displayedName\" : \"493c08d3-95b8-4139-b88c-198de0527867\"\
+                    ,\r\n  \"description\" : \"\"\r\n}"
+      security:
+      - bearerAuthJWT: []
+  /tenant:
+    get:
+      tags:
+      - tenant
+      operationId: tenants/get-all-tenants
+      responses:
+        200:
+          description: "200"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tenant-625772535'
+              examples:
+                tenants/get-all-tenants:
+                  value: "[ {\r\n  \"name\" : \"11711166-1457-46b1-9490-a7aa67a4e597\"\
+                    ,\r\n  \"displayedName\" : \"My Project\",\r\n  \"description\"\
+                    \ : \"fe93048c-9fb2-4f78-a3bd-1e1736a1341f\"\r\n}, {\r\n  \"name\"\
+                    \ : \"f0ff92b7-d61c-415b-9078-65d097ecdd68\",\r\n  \"displayedName\"\
+                    \ : \"My Project\",\r\n  \"description\" : \"d4e4e850-d2b6-4088-b7ea-78c9582f595b\"\
+                    \r\n}, {\r\n  \"name\" : \"95177a6d-ba66-44cc-9b27-9d58bbc5cd10\"\
+                    ,\r\n  \"displayedName\" : \"My Project\",\r\n  \"description\"\
+                    \ : \"c0a3ff63-0529-4b83-805c-f24770a493ea\"\r\n} ]"
+    post:
+      tags:
+      - tenant
+      operationId: tenants/post-tenant
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/tenant-name-1072526318'
+            examples:
+              tenants/post-tenant:
+                value: "{\r\n  \"name\" : \"278564c7-b69f-4a5b-ae16-81af2cc050df\"\
+                  ,\r\n  \"displayedName\" : \"My Project\",\r\n  \"description\"\
+                  \ : \"efba91cb-9d20-4588-9f98-6ab1ab54a78a\"\r\n}"
+      responses:
+        200:
+          description: "200"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tenant-name-1072526318'
+              examples:
+                tenants/post-tenant:
+                  value: "{\r\n  \"name\" : \"f67c6d39-7dc5-4cb3-9570-05cbd8e54ce2\"\
+                    ,\r\n  \"displayedName\" : \"My Project\",\r\n  \"description\"\
+                    \ : \"efba91cb-9d20-4588-9f98-6ab1ab54a78a\"\r\n}"
+  /tenant/{name}:
+    get:
+      tags:
+      - tenant
+      operationId: tenants/get-tenant
+      parameters:
+      - name: name
+        in: path
+        description: Name of the tenant to be read
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: "200"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tenant-name-1072526318'
+              examples:
+                tenants/get-tenant:
+                  value: "{\r\n  \"name\" : \"d35b8a7f-1ef3-474e-a82f-bd445cc38b4a\"\
+                    ,\r\n  \"displayedName\" : \"My Project\",\r\n  \"description\"\
+                    \ : \"108506c3-c7f8-4265-9bdd-971be4f7e3ec\"\r\n}"
+    delete:
+      tags:
+      - tenant
+      operationId: tenants/delete-tenant
+      parameters:
+      - name: name
+        in: path
+        description: Name of the tenant to be deleted
+        required: true
+        schema:
+          type: string
+      responses:
+        204:
+          description: "204"
+    patch:
+      tags:
+      - tenant
+      operationId: tenants/update-tenant
+      parameters:
+      - name: name
+        in: path
+        description: Name of the tenant to be updated
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/tenant-name-379992567'
+            examples:
+              tenants/update-tenant:
+                value: "{\r\n  \"name\" : \"5e5388e3-7fc8-4d7c-921e-ba80c6cb0bea\"\
+                  ,\r\n  \"displayedName\" : \"Updated Tenant\",\r\n  \"description\"\
+                  \ : \"73ebca60-08d0-4dce-9cb6-638d464b2f38\"\r\n}"
+      responses:
+        200:
+          description: "200"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/tenant-name-1072526318'
+              examples:
+                tenants/update-tenant:
+                  value: "{\r\n  \"name\" : \"24c369ff-4924-4ebf-92fc-0c556d226f1a\"\
+                    ,\r\n  \"displayedName\" : \"Updated Tenant\",\r\n  \"description\"\
+                    \ : \"73ebca60-08d0-4dce-9cb6-638d464b2f38\"\r\n}"
+  /user:
+    get:
+      tags:
+      - user
+      operationId: users/get-tenant-assignments
+      parameters:
+      - name: tenant
+        in: query
+        description: Name of the tenant
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: "200"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user-id-tenant-811771042'
+              examples:
+                users/get-tenant-assignments:
+                  value: "[ {\r\n  \"tenant\" : \"29c223be-55d6-4885-80ee-af93b195afd0\"\
+                    ,\r\n  \"user\" : {\r\n    \"id\" : \"a43c5ad9-1bf0-4158-917f-6209c57066ec\"\
+                    ,\r\n    \"email\" : \"1fd85ab2-470a-49f3-b7a9-f6cc7076a889@mail\"\
+                    ,\r\n    \"firstName\" : \"Naqpdjhwrf\",\r\n    \"lastName\" :\
+                    \ \"Kvejkfodpl\",\r\n    \"credential\" : \"*****\"\r\n  },\r\n\
+                    \  \"roles\" : [ \"developer\" ]\r\n}, {\r\n  \"tenant\" : \"\
+                    29c223be-55d6-4885-80ee-af93b195afd0\",\r\n  \"user\" : {\r\n\
+                    \    \"id\" : \"430a57c9-5c2d-4f1d-9177-44b87342227e\",\r\n  \
+                    \  \"email\" : \"d0552911-c1fe-4c9a-935d-769efc15e62c@mail\",\r\
+                    \n    \"firstName\" : \"Qreptuxfym\",\r\n    \"lastName\" : \"\
+                    Egeexypimq\",\r\n    \"credential\" : \"*****\"\r\n  },\r\n  \"\
+                    roles\" : [ \"developer\" ]\r\n}, {\r\n  \"tenant\" : \"29c223be-55d6-4885-80ee-af93b195afd0\"\
+                    ,\r\n  \"user\" : {\r\n    \"id\" : \"e4c2ec91-d53c-41ed-8e20-b10fe4fe9296\"\
+                    ,\r\n    \"email\" : \"c9064dc1-94ee-4d4a-b8be-f533259b5d3f@mail\"\
+                    ,\r\n    \"firstName\" : \"Fxjwrwvnti\",\r\n    \"lastName\" :\
+                    \ \"Addmbjkmnb\",\r\n    \"credential\" : \"*****\"\r\n  },\r\n\
+                    \  \"roles\" : [ \"developer\" ]\r\n} ]"
+    post:
+      tags:
+      - user
+      operationId: users/post-user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/user888266858'
+            examples:
+              users/post-user:
+                value: "{\r\n  \"id\" : \"708ba5ae-3080-4ec1-a402-5f9d5425b8b8\",\r\
+                  \n  \"email\" : \"jedi@mail\",\r\n  \"firstName\" : \"Obi-Wan\"\
+                  ,\r\n  \"lastName\" : \"Kenobi\",\r\n  \"credential\" : \"TheForce\"\
+                  \r\n}"
+      responses:
+        200:
+          description: "200"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user-id1717187775'
+              examples:
+                users/post-user:
+                  value: "{\r\n  \"id\" : \"52514bd0-f3df-49bf-82d6-bc529f3ba5ed\"\
+                    ,\r\n  \"email\" : \"jedi@mail\",\r\n  \"firstName\" : \"Obi-Wan\"\
+                    ,\r\n  \"lastName\" : \"Kenobi\",\r\n  \"credential\" : \"*****\"\
+                    \r\n}"
+  /user/search:
+    get:
+      tags:
+      - user
+      operationId: users/search-by-all
+      parameters:
+      - name: firstName
+        in: query
+        description: First name of the user
+        required: true
+        schema:
+          type: string
+      - name: lastName
+        in: query
+        description: Last name of the user
+        required: true
+        schema:
+          type: string
+      - name: email
+        in: query
+        description: Email of the user
+        required: true
+        schema:
+          type: string
+      - name: userName
+        in: query
+        description: Username of the user
+        required: true
+        schema:
+          type: string
+      - name: searchingString
+        in: query
+        description: Username of the user
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: "200"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user-search651500603'
+              examples:
+                users/search-by-all:
+                  value: "[ {\r\n  \"id\" : \"3207768c-4389-43de-bb93-fb8d43f66527\"\
+                    ,\r\n  \"email\" : \"9e8adb66-eef4-487c-980d-eb77226dd378@mail\"\
+                    ,\r\n  \"firstName\" : \"Ner\",\r\n  \"lastName\" : \"Zhul\",\r\
+                    \n  \"credential\" : \"*****\"\r\n} ]"
+                users/search-by-string:
+                  value: "[ {\r\n  \"id\" : \"fa2fa318-c154-4fc4-af1b-b60134640d45\"\
+                    ,\r\n  \"email\" : \"7c19d6e1-ebff-4dd1-90c8-a1d84061f2d1@mail\"\
+                    ,\r\n  \"firstName\" : \"Ner\",\r\n  \"lastName\" : \"Zhul\",\r\
+                    \n  \"credential\" : \"*****\"\r\n}, {\r\n  \"id\" : \"e4482e09-333e-4f3d-8988-c7102dcbb1b5\"\
+                    ,\r\n  \"email\" : \"e6ce69dd-84ab-4a08-b0fe-dad091a4625b@mail\"\
+                    ,\r\n  \"firstName\" : \"Fon\",\r\n  \"lastName\" : \"Ner\",\r\
+                    \n  \"credential\" : \"*****\"\r\n} ]"
+  /user/{id}:
+    get:
+      tags:
+      - user
+      operationId: users/get-user
+      parameters:
+      - name: id
+        in: path
+        description: Id of the user to be read
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: "200"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user-id1717187775'
+              examples:
+                users/get-user:
+                  value: "{\r\n  \"id\" : \"83bce94d-c177-412b-bdb1-795960cf88f5\"\
+                    ,\r\n  \"email\" : \"b31c27d2-81c5-4ce7-8904-5ff27ff032e0@mail\"\
+                    ,\r\n  \"firstName\" : \"Hpxbwjqehy\",\r\n  \"lastName\" : \"\
+                    Yxlwtiflek\",\r\n  \"credential\" : \"*****\"\r\n}"
+    delete:
+      tags:
+      - user
+      operationId: users/delete-user
+      parameters:
+      - name: id
+        in: path
+        description: Id of the user to be deleted
+        required: true
+        schema:
+          type: string
+      responses:
+        204:
+          description: "204"
+  /user/{id}/tenant:
+    get:
+      tags:
+      - user
+      operationId: users/get-user-assignments
+      parameters:
+      - name: id
+        in: path
+        description: Id of the user
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: "200"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user-id-tenant-811771042'
+              examples:
+                users/get-user-assignments:
+                  value: "[ {\r\n  \"tenant\" : \"f0ed269b-5ffd-44a8-8b4f-4d0a2d4d6557\"\
+                    ,\r\n  \"user\" : {\r\n    \"id\" : \"e5026b9c-5186-4f4e-8ecd-21221eb1e0f1\"\
+                    ,\r\n    \"email\" : \"4092d9c2-a312-4f2a-80e3-a676d8a06ae5@mail\"\
+                    ,\r\n    \"firstName\" : \"Lmscsretmr\",\r\n    \"lastName\" :\
+                    \ \"Bqgfzrdfsa\",\r\n    \"credential\" : \"*****\"\r\n  },\r\n\
+                    \  \"roles\" : [ \"developer\" ]\r\n}, {\r\n  \"tenant\" : \"\
+                    056ed1e2-e423-4f1b-a0c2-185a9b1ce190\",\r\n  \"user\" : {\r\n\
+                    \    \"id\" : \"e5026b9c-5186-4f4e-8ecd-21221eb1e0f1\",\r\n  \
+                    \  \"email\" : \"4092d9c2-a312-4f2a-80e3-a676d8a06ae5@mail\",\r\
+                    \n    \"firstName\" : \"Lmscsretmr\",\r\n    \"lastName\" : \"\
+                    Bqgfzrdfsa\",\r\n    \"credential\" : \"*****\"\r\n  },\r\n  \"\
+                    roles\" : [ \"maintainer\", \"developer\" ]\r\n} ]"
+  /user/{id}/tenant/{tenant-name}/{role}:
+    put:
+      tags:
+      - user
+      operationId: users/assign-tenant-to-user
+      parameters:
+      - name: id
+        in: path
+        description: Id of user
+        required: true
+        schema:
+          type: string
+      - name: tenant-name
+        in: path
+        description: Name of tenant
+        required: true
+        schema:
+          type: string
+      - name: role
+        in: path
+        description: Role of tenant
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: "200"
+    delete:
+      tags:
+      - user
+      operationId: users/evict-user-from-tenant
+      parameters:
+      - name: id
+        in: path
+        description: Id of the user to be evicted
+        required: true
+        schema:
+          type: string
+      - name: tenant-name
+        in: path
+        description: Name of tenant
+        required: true
+        schema:
+          type: string
+      - name: role
+        in: path
+        description: Role of tenant
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: "200"
+components:
+  schemas:
+    tenant-name-379992567:
+      type: object
+      properties:
+        displayedName:
+          type: string
+          description: Displayed name of tenant
+        name:
+          type: string
+          description: Name of tenant (is ignored)
+        description:
+          type: string
+          description: Description
+    tenant-name-1072526318:
+      type: object
+      properties:
+        displayedName:
+          type: string
+          description: Displayed name of tenant
+        name:
+          type: string
+          description: Name of tenant
+        description:
+          type: string
+          description: Description
+    user-id-tenant-811771042:
+      type: array
+      items:
+        type: object
+        properties:
+          roles:
+            type: array
+            description: Tenant roles
+            items:
+              oneOf:
+              - type: object
+              - type: boolean
+              - type: string
+              - type: number
+          user:
+            type: object
+            description: User object
+          tenant:
+            type: string
+            description: Name of tenant
+        description: Tenant list
+    user-id1717187775:
+      type: object
+      properties:
+        lastName:
+          type: string
+          description: Last name of user
+        firstName:
+          type: string
+          description: First name of user
+        credential:
+          type: string
+          description: Masked password or key of user
+        id:
+          type: string
+          description: Id of user
+        email:
+          type: string
+          description: Email of user
+    tenant-625772535:
+      type: array
+      items:
+        type: object
+        properties:
+          displayedName:
+            type: string
+            description: Displayed name of tenant
+          name:
+            type: string
+            description: Name of tenant
+          description:
+            type: string
+            description: Description
+        description: Tenant list
+    context-1041425929:
+      type: object
+      properties:
+        tenants:
+          type: array
+          description: Available tenants
+          items:
+            oneOf:
+            - type: object
+            - type: boolean
+            - type: string
+            - type: number
+        user:
+          type: object
+          description: User entity
+    user888266858:
+      type: object
+      properties:
+        lastName:
+          type: string
+          description: Last name of user
+        firstName:
+          type: string
+          description: First name of user
+        credential:
+          type: string
+          description: Password or key of user
+        id:
+          type: string
+          description: Optional id of user
+        email:
+          type: string
+          description: Email of user
+    user-search651500603:
+      type: array
+      items:
+        type: object
+        properties:
+          lastName:
+            type: string
+            description: Last name of user
+          firstName:
+            type: string
+            description: First name of user
+          credential:
+            type: string
+            description: Masked password or key of user
+          id:
+            type: string
+            description: Id of user
+          email:
+            type: string
+            description: Email of user
+        description: User list
+  securitySchemes:
+    bearerAuthJWT:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

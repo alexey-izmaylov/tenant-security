@@ -1,0 +1,11 @@
+apiVersion: rbac.istio.io/v1alpha1
+kind: ServiceRoleBinding
+metadata:
+  name: tenant-role
+spec:
+  subjects:
+    - properties:
+        request.auth.claims[roles]: "tenant"
+  roleRef:
+    kind: ServiceRole
+    name: tenant-role
