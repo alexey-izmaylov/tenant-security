@@ -38,7 +38,6 @@ import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.fail
 
-
 @AutoConfigureRestDocs
 @Testcontainers
 @ContextConfiguration(initializers = [ApplicationTest.PropertyOverrideContextInitializer::class])
@@ -197,20 +196,24 @@ class TenantTest(
     @Test
     fun `group and role consistency`() {
         val tenant = post()
-        assertEquals(3,
+        assertEquals(
+            3,
             istio.serviceRole()
                 .list()
                 .items
                 .map { it.metadata.name.substringBefore(".") }
                 .filter { it == tenant.name }
-                .count())
-        assertEquals(3,
+                .count()
+        )
+        assertEquals(
+            3,
             istio.serviceRoleBinding()
                 .list()
                 .items
                 .map { it.metadata.name.substringBefore(".") }
                 .filter { it == tenant.name }
-                .count())
+                .count()
+        )
         client
             .get()
             .uri("/tenant/${tenant.name}")
@@ -234,20 +237,24 @@ class TenantTest(
             keycloak.realm(keycloakProperties.realm).roles().list().map { it.name.substringBefore(".") },
             not(hasItem(tenant.name))
         )
-        assertEquals(0,
+        assertEquals(
+            0,
             istio.serviceRole()
                 .list()
                 .items
                 .map { it.metadata.name.substringBefore(".") }
                 .filter { it == tenant.name }
-                .count())
-        assertEquals(0,
+                .count()
+        )
+        assertEquals(
+            0,
             istio.serviceRoleBinding()
                 .list()
                 .items
                 .map { it.metadata.name.substringBefore(".") }
                 .filter { it == tenant.name }
-                .count())
+                .count()
+        )
     }
 
     @Test

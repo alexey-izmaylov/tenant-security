@@ -13,7 +13,7 @@ internal class KeycloakRole(val keycloak: Keycloak, keycloakProperties: Keycloak
     private val realm = keycloakProperties.realm
 
     override suspend fun apply(tenant: Tenant, role: String) {
-        val name = "${tenant.name}.${role}"
+        val name = "${tenant.name}.$role"
         logger.info { "will create $name Keycloak Role" }
         keycloak.realm(realm)
             .roles()

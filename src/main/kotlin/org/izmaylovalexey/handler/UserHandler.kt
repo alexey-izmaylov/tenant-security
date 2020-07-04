@@ -92,8 +92,9 @@ internal class UserHandler(private val userService: UserService) {
             return when {
                 userName == "" && firstName == "" && lastName == "" && email == "" ->
                     ServerResponse.status(HttpStatus.OK).bodyAndAwait(userService.search(searchingString.get()))
-                else -> ServerResponse.status(HttpStatus.BAD_REQUEST)
-                    .bodyValueAndAwait("Wrong params. Use only searchingString or special parameters for different strings")
+                else ->
+                    ServerResponse.status(HttpStatus.BAD_REQUEST)
+                        .bodyValueAndAwait("Wrong params. Use only searchingString or special parameters for different strings")
             }
         }
         return ServerResponse.status(HttpStatus.OK)

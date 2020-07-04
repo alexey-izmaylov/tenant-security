@@ -39,7 +39,7 @@ internal class KeycloakTenant(
             .groups()
             .asFlow()
             .map {
-                //attributes missed in group list
+                // attributes missed in group list
                 keycloak.realm(realm)
                     .groups()
                     .group(it.id)
@@ -101,7 +101,7 @@ internal class KeycloakTenant(
         }
         launch {
             logger.info { "drop mongo database $name" }
-            //TODO use DBaaS
+            // TODO use DBaaS
             mongoClient.getDatabase(name).drop().asFlow().collect()
         }
         roleServices

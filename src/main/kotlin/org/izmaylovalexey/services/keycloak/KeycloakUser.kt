@@ -74,11 +74,13 @@ internal class KeycloakUser(
                 keycloak.realm(realm)
                     .users()
                     .get(it.id)
-                    .resetPassword(CredentialRepresentation().apply {
-                        value = user.credential
-                        type = "password"
-                        isTemporary = false
-                    })
+                    .resetPassword(
+                        CredentialRepresentation().apply {
+                            value = user.credential
+                            type = "password"
+                            isTemporary = false
+                        }
+                    )
             }
             .map { it.adapt() }
             .findFirst()

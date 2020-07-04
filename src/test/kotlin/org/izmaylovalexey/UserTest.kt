@@ -45,7 +45,6 @@ import kotlin.random.Random
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 
-
 @AutoConfigureRestDocs
 @Testcontainers
 @ContextConfiguration(initializers = [ApplicationTest.PropertyOverrideContextInitializer::class])
