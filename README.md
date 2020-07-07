@@ -66,11 +66,11 @@ Spring Boot actuator: /actuator
 | DEFAULT_ROLE         | owner                                     | In the 'user context' API new tenant is created and assigned with this role |
 
 ## Build
-Required: JDK 11, Docker, Maven.
+Required: JDK 11, Docker.
 
 ### Compile, execute tests, generate documentation and package jar
 ```shell script
-mvn clean install
+./mvnw clean install
 ```
 Application will be assembled as JAR in `target/` directory, e.g. `target/tenant-security-1.0.0-SNAPSHOT.jar`.
 
