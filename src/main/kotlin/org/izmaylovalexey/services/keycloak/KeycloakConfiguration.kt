@@ -86,7 +86,7 @@ class KeycloakConfiguration {
         keycloak.realm(realm).clients().create(clientRepresentation)
     }
 
-    companion object : KLogging()
+    private companion object : KLogging()
 }
 
 @ConfigurationProperties("keycloak")

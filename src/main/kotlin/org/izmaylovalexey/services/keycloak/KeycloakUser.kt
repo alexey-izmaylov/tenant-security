@@ -178,7 +178,7 @@ internal class KeycloakUser(
             .asFlow()
     }
 
-    companion object : KLogging()
+    private companion object : KLogging()
 }
 
 private fun UserRepresentation.adapt() = User(

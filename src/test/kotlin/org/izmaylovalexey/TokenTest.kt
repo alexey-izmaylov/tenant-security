@@ -17,7 +17,9 @@ import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.hasItem
 import org.hamcrest.Matchers.hasItems
 import org.hamcrest.Matchers.not
+import org.izmaylovalexey.entities.Failure
 import org.izmaylovalexey.entities.SecurityContext
+import org.izmaylovalexey.entities.Success
 import org.izmaylovalexey.entities.Tenant
 import org.izmaylovalexey.entities.User
 import org.izmaylovalexey.handler.ContextHandler
@@ -53,6 +55,7 @@ import java.time.Duration
 import java.util.UUID
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
+import kotlin.test.fail
 
 @AutoConfigureRestDocs
 @Testcontainers
@@ -70,7 +73,7 @@ class TokenTest(
     restDocumentation: RestDocumentationContextProvider
 ) {
 
-    companion object : KLogging()
+    private companion object : KLogging()
 
     init {
         Hooks.onOperatorDebug()
@@ -155,7 +158,13 @@ class TokenTest(
                     credential = credential
                 )
             ).orElseThrow()
-            val tenant = tenantService.create(Tenant())
+            val tenant = when (val either = tenantService.create(Tenant())) {
+                is Success -> either.value
+                is Failure -> {
+                    either.log(logger, "")
+                    fail()
+                }
+            }
             listOf("developer", "maintainer")
                 .onEach { userService.assign(user.id, tenant.name, it) }
                 .map { "${tenant.name}.$it" }
@@ -189,6 +198,8 @@ class TokenTest(
                         )
                     )
                 }
+                .filterIsInstance<Success<Tenant>>()
+                .map { it.value }
                 .onEach { userService.assign(user.id, it.name, "developer") }
                 .toSet()
             SecurityContext(user, tenants)

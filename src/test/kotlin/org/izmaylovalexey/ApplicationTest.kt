@@ -21,7 +21,7 @@ import java.util.stream.Stream
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class ApplicationTest {
 
-    companion object : KLogging() {
+    private companion object : KLogging() {
 
         private val registry: String = System.getProperty("registry", "")
 

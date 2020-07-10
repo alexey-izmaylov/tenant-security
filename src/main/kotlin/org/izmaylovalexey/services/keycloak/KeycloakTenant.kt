@@ -14,7 +14,12 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.reactive.asFlow
 import mu.KLogging
+import org.izmaylovalexey.entities.Either
+import org.izmaylovalexey.entities.Error
+import org.izmaylovalexey.entities.Failure
+import org.izmaylovalexey.entities.Success
 import org.izmaylovalexey.entities.Tenant
+import org.izmaylovalexey.entities.toFailure
 import org.izmaylovalexey.services.RoleService
 import org.izmaylovalexey.services.RoleTemplate
 import org.izmaylovalexey.services.TenantService
@@ -48,80 +53,94 @@ internal class KeycloakTenant(
             .map { adapt(it) }
     }
 
-    override suspend fun create(tenant: Tenant): Tenant = coroutineScope {
-        val response = keycloak.realm(realm)
-            .groups()
-            .add(adapt(tenant))
-        logger.trace { "create group response: ${response.status}" }
-        val id = response.location.path.substringAfterLast("/")
-        val actualTenant = Tenant(
-            name = id,
-            displayedName = tenant.displayedName,
-            description = tenant.description
-        )
-        roleServices.asFlow()
-            .flatMapMerge { service ->
-                roleTemplate.all().asFlow()
-                    .map {
-                        async {
+    override suspend fun create(tenant: Tenant) = runCatching {
+        coroutineScope {
+            val response = keycloak.realm(realm)
+                .groups()
+                .add(adapt(tenant))
+            logger.trace { "create group response: ${response.status}" }
+            val id = response.location.path.substringAfterLast("/")
+            val actualTenant = Tenant(
+                name = id,
+                displayedName = tenant.displayedName,
+                description = tenant.description
+            )
+            roleServices.asFlow()
+                .flatMapMerge { service ->
+                    roleTemplate.all().asFlow()
+                        .map {
                             service.apply(actualTenant, it)
                         }
-                    }
-            }
-            .flowOn(Dispatchers.Default)
-            .collect()
-        actualTenant
+                }
+                .flowOn(Dispatchers.Default)
+                .collect()
+            Success(actualTenant)
+        }
+    }.getOrElse { it.toFailure() }
+
+    override suspend fun get(name: String) = runCatching<Either<Tenant>> {
+        Success(
+            adapt(
+                keycloak.realm(realm)
+                    .groups()
+                    .group(name)
+                    .toRepresentation()
+            )
+        )
+    }.getOrElse {
+        when (it) {
+            is javax.ws.rs.NotFoundException -> Failure(Error.NotFound)
+            else -> it.toFailure()
+        }
     }
 
-    override suspend fun get(name: String): Tenant = adapt(
-        keycloak.realm(realm)
-            .groups()
-            .group(name)
-            .toRepresentation()
-    )
-
-    override suspend fun save(tenant: Tenant): Tenant {
+    override suspend fun save(tenant: Tenant) = runCatching {
         keycloak.realm(realm)
             .groups()
             .group(tenant.name)
             .update(adapt(tenant))
-        return tenant
-    }
+        Success(tenant)
+    }.getOrElse { it.toFailure() }
 
-    override suspend fun delete(name: String) = coroutineScope {
-        launch {
-            runCatching {
-                keycloak.realm(realm)
-                    .groups()
-                    .group(name)
-                    .remove()
-            }.getOrElse {
-                if (it !is javax.ws.rs.NotFoundException) throw it
+    override suspend fun delete(name: String) = runCatching {
+        coroutineScope {
+            val groupRoutine = async {
+                runCatching<Either<Unit>> {
+                    keycloak.realm(realm)
+                        .groups()
+                        .group(name)
+                        .remove()
+                    Success(Unit)
+                }.getOrElse {
+                    when (it) {
+                        is javax.ws.rs.NotFoundException -> Success(Unit)
+                        else -> Failure(Error.Exception(it))
+                    }
+                }
             }
-        }
-        launch {
-            logger.info { "drop mongo database $name" }
-            // TODO use DBaaS
-            mongoClient.getDatabase(name).drop().asFlow().collect()
-        }
-        roleServices
-            .asFlow()
-            .map { service ->
-                roleTemplate
-                    .all()
-                    .asFlow()
-                    .map {
-                        async {
+            launch {
+                logger.info { "drop mongo database $name" }
+                // TODO use DBaaS
+                mongoClient.getDatabase(name).drop().asFlow().collect()
+            }
+            roleServices
+                .asFlow()
+                .map { service ->
+                    roleTemplate
+                        .all()
+                        .asFlow()
+                        .map {
                             service.delete(name, it)
                         }
-                    }
-            }
-            .flattenMerge()
-            .flowOn(Dispatchers.Default)
-            .collect()
-    }
+                }
+                .flattenMerge()
+                .flowOn(Dispatchers.Default)
+                .collect()
+            groupRoutine.await()
+        }
+    }.getOrElse { it.toFailure() }
 
-    companion object : KLogging()
+    private companion object : KLogging()
 }
 
 internal fun adapt(group: GroupRepresentation) = Tenant(

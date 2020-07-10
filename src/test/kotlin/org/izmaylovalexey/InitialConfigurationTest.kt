@@ -35,7 +35,7 @@ class InitialConfigurationTest(
         Hooks.onOperatorDebug()
     }
 
-    companion object : KLogging()
+    private companion object : KLogging()
 
     @BeforeAll
     fun startApp() {

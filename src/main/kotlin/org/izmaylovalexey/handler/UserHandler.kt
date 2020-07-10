@@ -113,5 +113,5 @@ internal class UserHandler(private val userService: UserService) {
         }
     }
 
-    companion object : KLogging()
+    private companion object : KLogging()
 }

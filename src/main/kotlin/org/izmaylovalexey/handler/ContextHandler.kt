@@ -1,6 +1,7 @@
 package org.izmaylovalexey.handler
 
 import com.auth0.jwt.JWT
+import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
@@ -9,6 +10,7 @@ import kotlinx.coroutines.reactive.asFlow
 import mu.KLogging
 import org.izmaylovalexey.TenantSecurityConfig
 import org.izmaylovalexey.entities.SecurityContext
+import org.izmaylovalexey.entities.Success
 import org.izmaylovalexey.entities.Tenant
 import org.izmaylovalexey.services.TenantService
 import org.izmaylovalexey.services.UserService
@@ -36,6 +38,8 @@ internal class ContextHandler(
                         userService.get(userId),
                         userService.getAssignments(userId)
                             .map { tenantService.get(it.tenant) }
+                            .filterIsInstance<Success<Tenant>>()
+                            .map { it.value }
                             .toSet()
                     )
                 )
@@ -53,6 +57,8 @@ internal class ContextHandler(
                 ServerResponse.status(HttpStatus.OK).bodyValueAndAwait(
                     request.bodyToMono<Tenant>().asFlow()
                         .map(tenantService::create)
+                        .filterIsInstance<Success<Tenant>>()
+                        .map { it.value }
                         .onEach { userService.assign(userId, it.name, tenantSecurityConfig.defaultRole) }
                         .first()
                 )
@@ -60,7 +66,7 @@ internal class ContextHandler(
         }
     }
 
-    companion object : KLogging()
+    private companion object : KLogging()
 }
 
 fun ServerRequest.authHeader(): List<String> = headers().header("Authorization")

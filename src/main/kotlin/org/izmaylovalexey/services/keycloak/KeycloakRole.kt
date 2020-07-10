@@ -32,5 +32,5 @@ internal class KeycloakRole(val keycloak: Keycloak, keycloakProperties: Keycloak
         }
     }
 
-    companion object : KLogging()
+    private companion object : KLogging()
 }

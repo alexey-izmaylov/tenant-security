@@ -26,7 +26,7 @@ class AsyncConfiguration(
     keycloakProperties: KeycloakProperties
 ) {
 
-    companion object : KLogging()
+    private companion object : KLogging()
 
     private val realm = keycloakProperties.realm
 

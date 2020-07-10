@@ -63,5 +63,5 @@ internal class IstioRole(val istioClient: IstioClient) : RoleService, RoleTempla
         .toSet()
         .ifEmpty { setOf("") }
 
-    companion object : KLogging()
+    private companion object : KLogging()
 }

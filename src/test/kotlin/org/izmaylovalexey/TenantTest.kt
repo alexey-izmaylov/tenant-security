@@ -15,6 +15,8 @@ import org.junit.jupiter.api.TestInstance
 import org.keycloak.admin.client.Keycloak
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.http.HttpHeaders
+import org.springframework.http.MediaType
 import org.springframework.restdocs.RestDocumentationContextProvider
 import org.springframework.restdocs.operation.preprocess.Preprocessors
 import org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath
@@ -298,6 +300,50 @@ class TenantTest(
             .exchange()
             .expectStatus().isOk
             .expectBody<Tenant>().isEqualTo(expectedTenant)
+    }
+
+    @Test
+    fun badPost() {
+        client
+            .post()
+            .uri("/tenant")
+            .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+            .body(Mono.just(" "))
+            .exchange()
+            .expectStatus().isBadRequest
+            .expectBody().isEmpty
+    }
+
+    @Test
+    fun emptyPost() {
+        client
+            .post()
+            .uri("/tenant")
+            .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+            .exchange()
+            .expectStatus().isBadRequest
+            .expectBody().isEmpty
+    }
+
+    @Test
+    fun badPatch() {
+        client
+            .patch()
+            .uri("/tenant/1")
+            .body(Mono.just(""))
+            .exchange()
+            .expectStatus().isBadRequest
+            .expectBody().isEmpty
+    }
+
+    @Test
+    fun emptyPatch() {
+        client
+            .patch()
+            .uri("/tenant/1")
+            .exchange()
+            .expectStatus().isBadRequest
+            .expectBody().isEmpty
     }
 
     private fun post(): Tenant {

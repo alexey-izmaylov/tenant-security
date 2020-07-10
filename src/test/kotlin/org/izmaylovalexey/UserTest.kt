@@ -2,11 +2,14 @@ package org.izmaylovalexey
 
 import com.epages.restdocs.apispec.WebTestClientRestDocumentationWrapper.document
 import kotlinx.coroutines.runBlocking
+import mu.KLogging
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.containsInAnyOrder
 import org.hamcrest.Matchers.hasItem
 import org.hamcrest.Matchers.not
 import org.izmaylovalexey.entities.Assignment
+import org.izmaylovalexey.entities.Failure
+import org.izmaylovalexey.entities.Success
 import org.izmaylovalexey.entities.Tenant
 import org.izmaylovalexey.entities.User
 import org.izmaylovalexey.handler.UserHandler
@@ -44,6 +47,7 @@ import java.util.UUID
 import kotlin.random.Random
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
+import kotlin.test.fail
 
 @AutoConfigureRestDocs
 @Testcontainers
@@ -74,6 +78,8 @@ class UserTest(
                 .withRequestDefaults(Preprocessors.prettyPrint())
         )
         .build()
+
+    private companion object : KLogging()
 
     @Test
     fun `post-user`() {
@@ -681,7 +687,13 @@ class UserTest(
     }
 
     private fun newTenant(): String = runBlocking {
-        tenantService.create(Tenant()).name
+        when (val either = tenantService.create(Tenant())) {
+            is Success -> either.value.name
+            is Failure -> {
+                either.log(logger, "")
+                fail()
+            }
+        }
     }
 
     private fun assign(user: User, tenant: String, role: String): Assignment {
