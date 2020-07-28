@@ -17,7 +17,6 @@ import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.hasItem
 import org.hamcrest.Matchers.hasItems
 import org.hamcrest.Matchers.not
-import org.izmaylovalexey.entities.Failure
 import org.izmaylovalexey.entities.SecurityContext
 import org.izmaylovalexey.entities.Success
 import org.izmaylovalexey.entities.Tenant
@@ -55,7 +54,6 @@ import java.time.Duration
 import java.util.UUID
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
-import kotlin.test.fail
 
 @AutoConfigureRestDocs
 @Testcontainers
@@ -157,14 +155,8 @@ class TokenTest(
                     lastName = "Izmaylov",
                     credential = credential
                 )
-            ).orElseThrow()
-            val tenant = when (val either = tenantService.create(Tenant())) {
-                is Success -> either.value
-                is Failure -> {
-                    either.log(logger, "")
-                    fail()
-                }
-            }
+            ).unwrap()
+            val tenant = tenantService.create(Tenant()).unwrap()
             listOf("developer", "maintainer")
                 .onEach { userService.assign(user.id, tenant.name, it) }
                 .map { "${tenant.name}.$it" }
@@ -188,7 +180,7 @@ class TokenTest(
                     lastName = "Izmaylov",
                     credential = credential
                 )
-            ).orElseThrow()
+            ).unwrap()
             val tenants = listOf(1..3)
                 .map {
                     tenantService.create(
@@ -248,7 +240,7 @@ class TokenTest(
                     lastName = "Izmaylov",
                     credential = credential
                 )
-            ).orElseThrow()
+            ).unwrap()
         }
         val token = getToken(email, credential)
 
@@ -280,7 +272,10 @@ class TokenTest(
             }.returnResult()
             .responseBody
         assertNotNull(tenant)
-        assertThat(runBlocking { userService.getAssignments(user.id).map { it.tenant }.toSet() }, hasItem(tenant.name))
+        assertThat(
+            runBlocking { userService.getAssignments(user.id).unwrap().map { it.tenant }.toSet() },
+            hasItem(tenant.name)
+        )
 
         val tokenRole = "${tenant.name}.${tenantSecurityConfig.defaultRole}"
         assertThat(

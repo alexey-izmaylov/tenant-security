@@ -6,6 +6,9 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.reactive.asFlow
 import kotlinx.coroutines.reactor.asFlux
 import mu.KLogging
+import org.izmaylovalexey.entities.Error
+import org.izmaylovalexey.entities.Failure
+import org.izmaylovalexey.entities.Success
 import org.izmaylovalexey.entities.User
 import org.izmaylovalexey.services.UserService
 import org.keycloak.admin.client.Keycloak
@@ -19,7 +22,7 @@ import reactor.core.publisher.Mono
 
 @Component
 @EnableAsync
-class AsyncConfiguration(
+internal class AsyncConfiguration(
     private val keycloak: Keycloak,
     private val userService: UserService,
     private val initialUserProperties: InitialUserProperties,
@@ -37,10 +40,11 @@ class AsyncConfiguration(
             initialUserProperties.password == "\${INIT_USER_PASSWORD}" ||
             initialUserProperties.role == "\${INIT_USER_ROLE}"
         ) {
-            throw NullPointerException("Can't create initial user: can't find one of: email, password,role")
+            logger.info { "Some of initialUserProperties are not set." }
+            return
         }
 
-        logger.info { "will create operator role: ${initialUserProperties.role}" }
+        logger.trace { "will create operator role: ${initialUserProperties.role}" }
 
         val resultRole = kotlin.runCatching {
             keycloak.realm(realm)
@@ -56,7 +60,7 @@ class AsyncConfiguration(
             .get(initialUserProperties.role)
             .toRepresentation()
 
-        logger.info { "will create operator user: ${initialUserProperties.email}" }
+        logger.trace { "will create operator user: ${initialUserProperties.email}" }
 
         val resultUser = Mono.just(
             User(
@@ -69,11 +73,14 @@ class AsyncConfiguration(
             .asFlow()
             .map(userService::create)
             .asFlux()
-            .blockFirst()
+            .blockFirst()!!
 
-        when {
-            resultUser!!.isPresent -> logger.info { "Initial user ${initialUserProperties.email} was created successful" }
-            else -> logger.info { "Initial user ${initialUserProperties.email} already exist" }
+        when (resultUser) {
+            is Success -> logger.info { "Initial user ${initialUserProperties.email} was created successfully." }
+            is Failure -> when (resultUser.error) {
+                is Error.EmailCollision -> logger.info { "Initial user ${initialUserProperties.email} already exists." }
+                else -> resultUser.log(logger, "Failed to create initial user.")
+            }
         }
 
         val user = Mono.just(initialUserProperties.email)
@@ -84,10 +91,10 @@ class AsyncConfiguration(
                     .first()
             }
             .asFlux()
-            .blockFirst()
+            .blockFirst()!!
 
-        keycloak.realm(realm).users().get(user!!.id).roles().realmLevel().add(listOf(role))
+        keycloak.realm(realm).users().get(user.id).roles().realmLevel().add(listOf(role))
 
-        logger.info { "Initial user ${initialUserProperties.email} has role ${initialUserProperties.role}" }
+        logger.info { "Initial user ${initialUserProperties.email} has role ${initialUserProperties.role}." }
     }
 }

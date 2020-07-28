@@ -1,9 +1,11 @@
 package org.izmaylovalexey.handler
 
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.reactive.asFlow
+import kotlinx.coroutines.reactive.awaitFirstOrDefault
 import mu.KLogging
+import org.izmaylovalexey.entities.Either
+import org.izmaylovalexey.entities.Error
+import org.izmaylovalexey.entities.Failure
+import org.izmaylovalexey.entities.Success
 import org.izmaylovalexey.entities.User
 import org.izmaylovalexey.services.UserService
 import org.springframework.http.HttpStatus
@@ -13,17 +15,21 @@ import org.springframework.web.reactive.function.server.bodyAndAwait
 import org.springframework.web.reactive.function.server.bodyToMono
 import org.springframework.web.reactive.function.server.bodyValueAndAwait
 import org.springframework.web.reactive.function.server.buildAndAwait
+import reactor.core.publisher.Mono
 
 internal class UserHandler(private val userService: UserService) {
 
     suspend fun get(request: ServerRequest): ServerResponse {
-        val result = runCatching {
-            userService.get(request.pathVariable("id"))
-        }
-        return when {
-            result.isSuccess -> ServerResponse.status(HttpStatus.OK).bodyValueAndAwait(result.getOrThrow())
-            result.exceptionOrNull() is javax.ws.rs.NotFoundException -> ServerResponse.status(HttpStatus.NOT_FOUND).buildAndAwait()
-            else -> ServerResponse.status(HttpStatus.INTERNAL_SERVER_ERROR).buildAndAwait()
+        val id = request.pathVariable("id")
+        return when (val result = userService.get(id)) {
+            is Success -> ServerResponse.status(HttpStatus.OK).bodyValueAndAwait(result.value)
+            is Failure -> when (result.error) {
+                is Error.NotFound -> ServerResponse.status(HttpStatus.NOT_FOUND).buildAndAwait()
+                else -> {
+                    result.log(logger, "Failed to get $id user.")
+                    ServerResponse.status(HttpStatus.INTERNAL_SERVER_ERROR).buildAndAwait()
+                }
+            }
         }
     }
 
@@ -31,19 +37,32 @@ internal class UserHandler(private val userService: UserService) {
         val tenant = request.queryParam("tenant")
         return when {
             tenant.isPresent -> ServerResponse.status(HttpStatus.OK).bodyAndAwait(userService.list(tenant.get()))
-            else -> ServerResponse.status(HttpStatus.BAD_REQUEST).bodyValueAndAwait("Missing tenant parameter")
+            else -> ServerResponse.status(HttpStatus.BAD_REQUEST).bodyValueAndAwait("Missing tenant parameter.")
         }
     }
 
     suspend fun post(request: ServerRequest): ServerResponse {
-        val result = request
-            .bodyToMono<User>()
-            .asFlow()
-            .map(userService::create)
-            .first()
-        return when {
-            result.isPresent -> ServerResponse.status(HttpStatus.OK).bodyValueAndAwait(result.get())
-            else -> ServerResponse.status(HttpStatus.BAD_REQUEST).bodyValueAndAwait("This email is used")
+        val input = request.bodyToMono<User>()
+            .map<Either<User>> { Success(it) }
+            .onErrorResume { Mono.just(Failure(Error.Exception(it))) }
+            .awaitFirstOrDefault(Failure(Error.NotFound))
+        return when (input) {
+            is Success -> when (val result = userService.create(input.value)) {
+                is Success -> ServerResponse.status(HttpStatus.OK).bodyValueAndAwait(result.value)
+                is Failure -> when (result.error) {
+                    is Error.EmailCollision ->
+                        ServerResponse.status(HttpStatus.BAD_REQUEST)
+                            .bodyValueAndAwait("This email is used.")
+                    else -> {
+                        result.log(logger, "Failed to create user: ${input.value}.")
+                        ServerResponse.status(HttpStatus.INTERNAL_SERVER_ERROR).buildAndAwait()
+                    }
+                }
+            }
+            is Failure -> {
+                input.log(logger, "Failed to post user.")
+                ServerResponse.status(HttpStatus.BAD_REQUEST).buildAndAwait()
+            }
         }
     }
 
@@ -51,11 +70,15 @@ internal class UserHandler(private val userService: UserService) {
         val id = request.pathVariable("id")
         val tenantName = request.pathVariable("tenant-name")
         val role = request.pathVariable("role")
-        val result = runCatching { userService.assign(id, tenantName, role) }
-        return when {
-            result.isSuccess -> ServerResponse.status(HttpStatus.OK).buildAndAwait()
-            result.exceptionOrNull() is javax.ws.rs.NotFoundException -> ServerResponse.status(HttpStatus.NOT_FOUND).buildAndAwait()
-            else -> ServerResponse.status(HttpStatus.INTERNAL_SERVER_ERROR).buildAndAwait()
+        return when (val result = userService.assign(id, tenantName, role)) {
+            is Success -> ServerResponse.status(HttpStatus.OK).buildAndAwait()
+            is Failure -> when (result.error) {
+                is Error.NotFound -> ServerResponse.status(HttpStatus.NOT_FOUND).buildAndAwait()
+                else -> {
+                    result.log(logger, "Failed to assign.")
+                    ServerResponse.status(HttpStatus.INTERNAL_SERVER_ERROR).buildAndAwait()
+                }
+            }
         }
     }
 
@@ -63,20 +86,24 @@ internal class UserHandler(private val userService: UserService) {
         val id = request.pathVariable("id")
         val tenantName = request.pathVariable("tenant-name")
         val role = request.pathVariable("role")
-        userService.evict(id, tenantName, role)
-        return ServerResponse.status(HttpStatus.OK).buildAndAwait()
+        return when (val result = userService.evict(id, tenantName, role)) {
+            is Success -> ServerResponse.status(HttpStatus.OK).buildAndAwait()
+            is Failure -> when (result.error) {
+                is Error.NotFound -> ServerResponse.status(HttpStatus.NOT_FOUND).buildAndAwait()
+                else -> {
+                    result.log(logger, "Failed to evict.")
+                    ServerResponse.status(HttpStatus.INTERNAL_SERVER_ERROR).buildAndAwait()
+                }
+            }
+        }
     }
 
     suspend fun delete(request: ServerRequest): ServerResponse {
         val id = request.pathVariable("id")
-        val result = userService.delete(id).first()
-        return when {
-            result.isSuccess -> {
-                logger.trace { "user has been deleted, status: ${result.getOrThrow()}" }
-                ServerResponse.status(HttpStatus.NO_CONTENT).buildAndAwait()
-            }
-            else -> {
-                logger.error(result.exceptionOrNull()) { "Failed to delete $id user" }
+        return when (val result = userService.delete(id)) {
+            is Success -> ServerResponse.status(HttpStatus.NO_CONTENT).buildAndAwait()
+            is Failure -> {
+                result.log(logger, "Failed to delete $id user.")
                 ServerResponse.status(HttpStatus.INTERNAL_SERVER_ERROR).buildAndAwait()
             }
         }
@@ -103,13 +130,15 @@ internal class UserHandler(private val userService: UserService) {
 
     suspend fun getAssignments(request: ServerRequest): ServerResponse {
         val id = request.pathVariable("id")
-        val result = runCatching {
-            userService.getAssignments(id)
-        }
-        return when {
-            result.isSuccess -> ServerResponse.status(HttpStatus.OK).bodyAndAwait(result.getOrThrow())
-            result.exceptionOrNull() is javax.ws.rs.NotFoundException -> ServerResponse.status(HttpStatus.NOT_FOUND).buildAndAwait()
-            else -> ServerResponse.status(HttpStatus.INTERNAL_SERVER_ERROR).buildAndAwait()
+        return when (val result = userService.getAssignments(id)) {
+            is Success -> ServerResponse.status(HttpStatus.OK).bodyAndAwait(result.value)
+            is Failure -> when (result.error) {
+                is Error.NotFound -> ServerResponse.status(HttpStatus.NOT_FOUND).buildAndAwait()
+                else -> {
+                    result.log(logger, "Failed to get $id user assignments.")
+                    ServerResponse.status(HttpStatus.INTERNAL_SERVER_ERROR).buildAndAwait()
+                }
+            }
         }
     }
 

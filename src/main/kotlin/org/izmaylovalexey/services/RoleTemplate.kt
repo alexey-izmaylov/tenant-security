@@ -1,5 +1,7 @@
 package org.izmaylovalexey.services
 
+import kotlinx.coroutines.flow.Flow
+
 interface RoleTemplate {
-    fun all(): Set<String>
+    suspend fun all(): Flow<String>
 }

@@ -2,10 +2,15 @@ package org.izmaylovalexey
 
 import mu.KLogging
 import org.awaitility.Awaitility
+import org.izmaylovalexey.entities.Either
+import org.izmaylovalexey.entities.Error
+import org.izmaylovalexey.entities.Failure
+import org.izmaylovalexey.entities.Success
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
+import org.junit.jupiter.api.fail
 import org.springframework.context.ApplicationContextInitializer
 import org.springframework.context.ConfigurableApplicationContext
 import org.springframework.test.context.support.TestPropertySourceUtils
@@ -89,5 +94,13 @@ class ApplicationTest {
     @AfterAll
     fun shutdown() {
         client.post().uri("/actuator/shutdown").exchange().expectStatus().isOk
+    }
+}
+
+fun <T> Either<T>.unwrap(): T = when (this) {
+    is Success -> value
+    is Failure -> when (error) {
+        is Error.Exception -> fail((error as Error.Exception).exception)
+        else -> fail(error::class.simpleName)
     }
 }

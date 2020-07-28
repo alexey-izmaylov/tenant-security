@@ -8,8 +8,6 @@ import org.hamcrest.Matchers.containsInAnyOrder
 import org.hamcrest.Matchers.hasItem
 import org.hamcrest.Matchers.not
 import org.izmaylovalexey.entities.Assignment
-import org.izmaylovalexey.entities.Failure
-import org.izmaylovalexey.entities.Success
 import org.izmaylovalexey.entities.Tenant
 import org.izmaylovalexey.entities.User
 import org.izmaylovalexey.handler.UserHandler
@@ -47,7 +45,6 @@ import java.util.UUID
 import kotlin.random.Random
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
-import kotlin.test.fail
 
 @AutoConfigureRestDocs
 @Testcontainers
@@ -120,7 +117,7 @@ class UserTest(
     }
 
     @Test
-    fun `post user with used email`() {
+    fun `post user with occupied email`() {
         val user = postUser()
 
         val user2 = User(
@@ -137,6 +134,7 @@ class UserTest(
             .body(Mono.just(user2))
             .exchange()
             .expectStatus().isBadRequest
+            .expectBody<String>().isEqualTo("This email is used.")
     }
 
     @Test
@@ -425,6 +423,7 @@ class UserTest(
             .uri("/user")
             .exchange()
             .expectStatus().isBadRequest
+            .expectBody<String>().isEqualTo("Missing tenant parameter.")
     }
 
     @Test
@@ -687,13 +686,7 @@ class UserTest(
     }
 
     private fun newTenant(): String = runBlocking {
-        when (val either = tenantService.create(Tenant())) {
-            is Success -> either.value.name
-            is Failure -> {
-                either.log(logger, "")
-                fail()
-            }
-        }
+        tenantService.create(Tenant()).unwrap().name
     }
 
     private fun assign(user: User, tenant: String, role: String): Assignment {

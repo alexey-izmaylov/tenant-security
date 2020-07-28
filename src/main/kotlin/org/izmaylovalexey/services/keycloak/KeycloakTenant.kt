@@ -6,11 +6,16 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.filterIsInstance
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapMerge
 import kotlinx.coroutines.flow.flattenMerge
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.onEmpty
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.reactive.asFlow
 import mu.KLogging
@@ -26,6 +31,7 @@ import org.izmaylovalexey.services.TenantService
 import org.keycloak.admin.client.Keycloak
 import org.keycloak.representations.idm.GroupRepresentation
 import org.springframework.stereotype.Service
+import javax.ws.rs.NotFoundException
 
 @Service
 internal class KeycloakTenant(
@@ -51,6 +57,7 @@ internal class KeycloakTenant(
                     .toRepresentation()
             }
             .map { adapt(it) }
+            .catch { logger.error(it) { "Exception occurred during tenant list loading." } }
     }
 
     override suspend fun create(tenant: Tenant) = runCatching {
@@ -65,16 +72,23 @@ internal class KeycloakTenant(
                 displayedName = tenant.displayedName,
                 description = tenant.description
             )
-            roleServices.asFlow()
-                .flatMapMerge { service ->
-                    roleTemplate.all().asFlow()
+            roleServices
+                .asFlow()
+                .map { service ->
+                    roleTemplate
+                        .all()
                         .map {
                             service.apply(actualTenant, it)
                         }
                 }
+                .flattenMerge()
                 .flowOn(Dispatchers.Default)
-                .collect()
-            Success(actualTenant)
+                .filterIsInstance<Failure>()
+                .onEach { it.log(logger, "Exception occurred during tenant creation.") }
+                .onEmpty<Either<Tenant>> {
+                    emit(Success(actualTenant))
+                }
+                .first()
         }
     }.getOrElse { it.toFailure() }
 
@@ -89,7 +103,7 @@ internal class KeycloakTenant(
         )
     }.getOrElse {
         when (it) {
-            is javax.ws.rs.NotFoundException -> Failure(Error.NotFound)
+            is NotFoundException -> Failure(Error.NotFound)
             else -> it.toFailure()
         }
     }
@@ -113,7 +127,7 @@ internal class KeycloakTenant(
                     Success(Unit)
                 }.getOrElse {
                     when (it) {
-                        is javax.ws.rs.NotFoundException -> Success(Unit)
+                        is NotFoundException -> Success(Unit)
                         else -> Failure(Error.Exception(it))
                     }
                 }
@@ -123,20 +137,20 @@ internal class KeycloakTenant(
                 // TODO use DBaaS
                 mongoClient.getDatabase(name).drop().asFlow().collect()
             }
-            roleServices
-                .asFlow()
-                .map { service ->
-                    roleTemplate
-                        .all()
-                        .asFlow()
+            roleServices.asFlow()
+                .flatMapMerge { service ->
+                    roleTemplate.all()
                         .map {
                             service.delete(name, it)
                         }
                 }
-                .flattenMerge()
+                .filterIsInstance<Failure>()
+                .onEach { it.log(logger, "Exception occurred during tenant deletion.") }
                 .flowOn(Dispatchers.Default)
-                .collect()
-            groupRoutine.await()
+                .onEmpty<Either<Unit>> {
+                    emit(groupRoutine.await())
+                }
+                .first()
         }
     }.getOrElse { it.toFailure() }
 

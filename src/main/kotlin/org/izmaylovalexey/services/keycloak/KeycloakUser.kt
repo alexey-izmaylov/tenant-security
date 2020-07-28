@@ -3,20 +3,30 @@ package org.izmaylovalexey.services.keycloak
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.count
 import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flatMapConcat
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.take
+import kotlinx.coroutines.flow.toSet
 import mu.KLogging
 import org.izmaylovalexey.entities.Assignment
+import org.izmaylovalexey.entities.Either
+import org.izmaylovalexey.entities.Error
+import org.izmaylovalexey.entities.Failure
+import org.izmaylovalexey.entities.Success
 import org.izmaylovalexey.entities.User
+import org.izmaylovalexey.entities.toFailure
 import org.izmaylovalexey.services.RoleTemplate
 import org.izmaylovalexey.services.UserService
 import org.keycloak.admin.client.Keycloak
 import org.keycloak.representations.idm.CredentialRepresentation
 import org.keycloak.representations.idm.UserRepresentation
 import org.springframework.stereotype.Service
-import java.util.Optional
+import javax.ws.rs.NotFoundException
 
 @Service
 internal class KeycloakUser(
@@ -29,14 +39,16 @@ internal class KeycloakUser(
 
     override suspend fun list(tenant: String): Flow<Assignment> = coroutineScope {
         roleTemplate.all()
-            .flatMap { role ->
+            .flatMapConcat { role ->
                 keycloak.realm(realm)
                     .roles()
                     .get("$tenant.$role")
                     .roleUserMembers
+                    .asFlow()
                     .map { Pair(it.adapt(), role) }
             }
-            .groupBy(
+            .catch { logger.error(it) { "Exception occurred during user list loading." } }
+            .toSet().groupBy(
                 { it.first },
                 { it.second }
             )
@@ -50,7 +62,7 @@ internal class KeycloakUser(
             .asFlow()
     }
 
-    override suspend fun create(user: User): Optional<User> {
+    override suspend fun create(user: User) = runCatching<Either<User>> {
         val sameEmailUsers = keycloak.realm(realm)
             .users()
             .search(user.email)
@@ -59,7 +71,7 @@ internal class KeycloakUser(
             .filter { it == user.email }
             .count()
         if (sameEmailUsers > 0) {
-            return Optional.empty()
+            return Failure(Error.EmailCollision)
         }
         keycloak.realm(realm)
             .users()
@@ -67,10 +79,10 @@ internal class KeycloakUser(
         return keycloak.realm(realm)
             .users()
             .search(user.email)
-            .stream()
+            .asFlow()
             .filter { it.email == user.email }
-            .limit(1)
-            .peek {
+            .take(1)
+            .onEach {
                 keycloak.realm(realm)
                     .users()
                     .get(it.id)
@@ -83,24 +95,32 @@ internal class KeycloakUser(
                     )
             }
             .map { it.adapt() }
-            .findFirst()
+            .map { Success(it) }
+            .first()
+    }.getOrElse { it.toFailure() }
+
+    override suspend fun get(id: String) = runCatching<Either<User>> {
+        Success(
+            keycloak.realm(realm)
+                .users()
+                .get(id)
+                .toRepresentation()
+                .adapt()
+        )
+    }.getOrElse {
+        when (it) {
+            is NotFoundException -> Failure(Error.NotFound)
+            else -> it.toFailure()
+        }
     }
 
-    override suspend fun get(id: String): User =
-        keycloak.realm(realm)
-            .users()
-            .get(id)
-            .toRepresentation()
-            .adapt()
+    override suspend fun delete(id: String) = runCatching {
+        logger.info { "will delete user $id" }
+        keycloak.realm(realm).users().delete(id)
+        Success(Unit)
+    }.getOrElse { it.toFailure() }
 
-    override suspend fun delete(id: String): Flow<Result<Int>> = flowOf(
-        runCatching {
-            logger.trace { "will delete user $id" }
-            keycloak.realm(realm).users().delete(id).status
-        }
-    )
-
-    override suspend fun assign(user: String, tenant: String, role: String) {
+    override suspend fun assign(user: String, tenant: String, role: String) = runCatching<Either<Unit>> {
         keycloak.realm(realm)
             .users()
             .get(user)
@@ -114,9 +134,15 @@ internal class KeycloakUser(
                         .toRepresentation()
                 )
             )
+        Success(Unit)
+    }.getOrElse {
+        when (it) {
+            is NotFoundException -> Failure(Error.NotFound)
+            else -> it.toFailure()
+        }
     }
 
-    override suspend fun evict(user: String, tenant: String, role: String) {
+    override suspend fun evict(user: String, tenant: String, role: String) = runCatching {
         keycloak.realm(realm)
             .users()
             .get(user)
@@ -130,7 +156,8 @@ internal class KeycloakUser(
                         .toRepresentation()
                 )
             )
-    }
+        Success(Unit)
+    }.getOrElse { it.toFailure() }
 
     override suspend fun search(searchingParam: String): Flow<User> {
         return keycloak
@@ -139,6 +166,7 @@ internal class KeycloakUser(
             .search(searchingParam, 0, 100, true)
             .asFlow()
             .map { it.adapt() }
+            .catch { logger.error(it) { "Exception occurred during user search." } }
     }
 
     override suspend fun search(userName: String, firstName: String, lastName: String, email: String): Flow<User> {
@@ -147,15 +175,16 @@ internal class KeycloakUser(
             .search(userName, firstName, lastName, email, 0, 100, true)
             .asFlow()
             .map { it.adapt() }
+            .catch { logger.error(it) { "Exception occurred during user search." } }
     }
 
-    override suspend fun getAssignments(id: String): Flow<Assignment> {
+    override suspend fun getAssignments(id: String) = runCatching<Either<Flow<Assignment>>> {
         val user = keycloak.realm(realm)
             .users()
             .get(id)
             .toRepresentation()
             .adapt()
-        return keycloak
+        val flow = keycloak
             .realm(realm)
             .users()
             .get(id)
@@ -176,6 +205,12 @@ internal class KeycloakUser(
                 )
             }
             .asFlow()
+        return Success(flow)
+    }.getOrElse {
+        when (it) {
+            is NotFoundException -> Failure(Error.NotFound)
+            else -> it.toFailure()
+        }
     }
 
     private companion object : KLogging()
