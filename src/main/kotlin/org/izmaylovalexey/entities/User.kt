@@ -8,4 +8,9 @@ data class User(
     val firstName: String,
     val lastName: String,
     @Transient val credential: String
-)
+) {
+
+    override fun toString(): String {
+        return id
+    }
+}

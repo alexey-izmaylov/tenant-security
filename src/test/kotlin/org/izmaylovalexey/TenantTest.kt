@@ -115,7 +115,8 @@ class TenantTest(
             .responseBody
             .switchIfEmpty { fail("Empty stream") }
             .collectList()
-            .block(Duration.ofMinutes(1))!!
+            .blockOptional(Duration.ofMinutes(1))
+            .orElseGet { emptyList() }
         assertThat(actualTenants, hasItems(*expectedTenants.toTypedArray()))
 
         client
@@ -172,6 +173,7 @@ class TenantTest(
             .uri("/tenant/${UUID.randomUUID()}")
             .exchange()
             .expectStatus().isNotFound
+            .expectBody().isEmpty
     }
 
     @Test

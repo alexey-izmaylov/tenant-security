@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Configuration
 import java.util.Base64
 
 @Configuration
-class KeycloakConfiguration {
+internal class KeycloakConfiguration {
 
     @Bean
     fun keycloak(keycloakProperties: KeycloakProperties, kubernetesClient: KubernetesClient): Keycloak {
