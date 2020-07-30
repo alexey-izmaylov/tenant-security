@@ -1,6 +1,5 @@
 package org.izmaylovalexey.services.keycloak
 
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.catch
@@ -37,7 +36,7 @@ internal class KeycloakUser(
 
     private val realm = keycloakProperties.realm
 
-    override suspend fun list(tenant: String): Flow<Assignment> = coroutineScope {
+    override suspend fun list(tenant: String) =
         roleTemplate.all()
             .flatMapConcat { role ->
                 keycloak.realm(realm)
@@ -48,7 +47,8 @@ internal class KeycloakUser(
                     .map { Pair(it.adapt(), role) }
             }
             .catch { logger.error(it) { "Exception occurred during user list loading." } }
-            .toSet().groupBy(
+            .toSet()
+            .groupBy(
                 { it.first },
                 { it.second }
             )
@@ -60,7 +60,6 @@ internal class KeycloakUser(
                 )
             }
             .asFlow()
-    }
 
     override suspend fun create(user: User) = runCatching<Either<User>> {
         val sameEmailUsers = keycloak.realm(realm)
