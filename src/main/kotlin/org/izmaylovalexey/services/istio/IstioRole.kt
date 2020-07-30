@@ -36,7 +36,7 @@ internal class IstioRole(val istioClient: IstioClient) : RoleService, RoleTempla
                 it.paths = it.paths.map { path -> path.replace("{tenant}", tenant.name) }
             }
         }
-        logger.info { "will create ServiceRole $serviceRole" }
+        logger.info { "will create ServiceRole: $serviceRole" }
 
         val serviceRoleBinding = mapper.readValue<ServiceRoleBinding>(
             javaClass.classLoader.getResource("ServiceRoleBinding.yaml")!!
@@ -45,20 +45,24 @@ internal class IstioRole(val istioClient: IstioClient) : RoleService, RoleTempla
             spec.roleRef.name = name
             spec.subjects.onEach { it.properties.replace("request.auth.claims[roles]", tenant.name) }
         }
-        logger.info { "will create ServiceRoleBinding $serviceRoleBinding" }
+        logger.info { "will create ServiceRoleBinding: $serviceRoleBinding" }
 
         istioClient.serviceRole().createOrReplace(serviceRole)
         istioClient.serviceRoleBinding().createOrReplace(serviceRoleBinding)
+
+        logger.trace { "Istio role is created: $name" }
         Success(Unit)
     }.getOrElse { it.toFailure() }
 
     override suspend fun delete(tenant: String, role: String) = runCatching {
         val name = "$tenant.$role"
-        logger.info { "will delete ServiceRole $name" }
+        logger.info { "will delete ServiceRole: $name" }
         istioClient.serviceRole().withName(name).delete()
 
-        logger.info { "will delete ServiceRoleBinding $name" }
+        logger.info { "will delete ServiceRoleBinding: $name" }
         istioClient.serviceRoleBinding().withName(name).delete()
+
+        logger.trace { "Istio role is deleted: $name" }
         Success(Unit)
     }.getOrElse { it.toFailure() }
 

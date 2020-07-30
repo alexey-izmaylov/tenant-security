@@ -19,19 +19,21 @@ internal class KeycloakRole(val keycloak: Keycloak, keycloakProperties: Keycloak
 
     override suspend fun apply(tenant: Tenant, role: String) = runCatching {
         val name = "${tenant.name}.$role"
-        logger.info { "will create Keycloak Role $name" }
+        logger.info { "will create Keycloak Role: $name" }
         keycloak.realm(realm)
             .roles()
             .create(RoleRepresentation(name, tenant.displayedName, false))
+        logger.trace { "Keycloak role is created: $name" }
         Success(Unit)
     }.getOrElse { it.toFailure() }
 
     override suspend fun delete(tenant: String, role: String) = runCatching<Either<Unit>> {
         val name = "$tenant.$role"
-        logger.info { "will delete Keycloak Role $name" }
+        logger.info { "will delete Keycloak Role: $name" }
         keycloak.realm(realm)
             .roles()
             .deleteRole(name)
+        logger.trace { "Keycloak role is deleted: $name" }
         Success(Unit)
     }.getOrElse {
         when (it) {

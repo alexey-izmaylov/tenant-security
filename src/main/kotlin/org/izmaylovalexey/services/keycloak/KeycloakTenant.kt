@@ -3,8 +3,8 @@ package org.izmaylovalexey.services.keycloak
 import com.mongodb.reactivestreams.client.MongoClient
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onEmpty
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.reactive.asFlow
+import kotlinx.coroutines.withContext
 import mu.KLogging
 import org.izmaylovalexey.entities.Either
 import org.izmaylovalexey.entities.Error
@@ -44,8 +45,8 @@ internal class KeycloakTenant(
 
     private val realm = keycloakProperties.realm
 
-    override suspend fun list(): Flow<Tenant> {
-        return keycloak.realm(realm)
+    override suspend fun list() =
+        keycloak.realm(realm)
             .groups()
             .groups()
             .asFlow()
@@ -58,38 +59,40 @@ internal class KeycloakTenant(
             }
             .map { adapt(it) }
             .catch { logger.error(it) { "Exception occurred during tenant list loading." } }
-    }
 
     override suspend fun create(tenant: Tenant) = runCatching {
-        coroutineScope {
-            val response = keycloak.realm(realm)
-                .groups()
-                .add(adapt(tenant))
-            logger.trace { "create group response: ${response.status}" }
-            val id = response.location.path.substringAfterLast("/")
-            val actualTenant = Tenant(
-                name = id,
-                displayedName = tenant.displayedName,
-                description = tenant.description
-            )
-            roleServices
-                .asFlow()
-                .map { service ->
-                    roleTemplate
-                        .all()
-                        .map {
-                            service.apply(actualTenant, it)
-                        }
-                }
-                .flattenMerge()
-                .flowOn(Dispatchers.Default)
-                .filterIsInstance<Failure>()
-                .onEach { it.log(logger, "Exception occurred during tenant creation.") }
-                .onEmpty<Either<Tenant>> {
-                    emit(Success(actualTenant))
-                }
-                .first()
+        val response = keycloak.realm(realm)
+            .groups()
+            .add(adapt(tenant))
+        if (response.status !in 200..299) {
+            return@runCatching Failure(Error.Message("Keycloak responded with ${response.status} status."))
         }
+        val id = response.location.path.substringAfterLast("/")
+        val actualTenant = Tenant(
+            name = id,
+            displayedName = tenant.displayedName,
+            description = tenant.description
+        )
+        roleTemplate.all()
+            .flatMapMerge { role ->
+                coroutineScope {
+                    roleServices
+                        .map {
+                            async(Dispatchers.Default) {
+                                it.apply(actualTenant, role)
+                            }
+                        }
+                        .awaitAll()
+                        .asFlow()
+                }
+            }
+            .filterIsInstance<Failure>()
+            .onEach { it.log(logger, "Exception occurred during tenant creation.") }
+            .flowOn(Dispatchers.Default)
+            .onEmpty<Either<Tenant>> {
+                emit(Success(actualTenant))
+            }
+            .first()
     }.getOrElse { it.toFailure() }
 
     override suspend fun get(name: String) = runCatching<Either<Tenant>> {
@@ -117,13 +120,14 @@ internal class KeycloakTenant(
     }.getOrElse { it.toFailure() }
 
     override suspend fun delete(name: String) = runCatching {
-        coroutineScope {
+        withContext(Dispatchers.Default) {
             val groupRoutine = async {
                 runCatching<Either<Unit>> {
                     keycloak.realm(realm)
                         .groups()
                         .group(name)
                         .remove()
+                    logger.trace { "Keycloak group is deleted: $name" }
                     Success(Unit)
                 }.getOrElse {
                     when (it) {
@@ -137,16 +141,20 @@ internal class KeycloakTenant(
                 // TODO use DBaaS
                 mongoClient.getDatabase(name).drop().asFlow().collect()
             }
-            roleServices.asFlow()
-                .flatMapMerge { service ->
-                    roleTemplate.all()
+            roleTemplate.all()
+                .map { role ->
+                    roleServices
                         .map {
-                            service.delete(name, it)
+                            async {
+                                it.delete(name, role)
+                            }
                         }
+                        .awaitAll()
+                        .asFlow()
                 }
+                .flattenMerge()
                 .filterIsInstance<Failure>()
                 .onEach { it.log(logger, "Exception occurred during tenant deletion.") }
-                .flowOn(Dispatchers.Default)
                 .onEmpty<Either<Unit>> {
                     emit(groupRoutine.await())
                 }
