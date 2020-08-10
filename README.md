@@ -73,14 +73,14 @@ Spring Boot actuator: /actuator
 ```
 
 It will:
-0. delete build artifacts
-1. format sources
-2. compile sources
-3. execute tests
-4. generate documentations
-5. package jars
-6. check dependencies
-7. lint sources.
+1. delete build artifacts
+2. format sources
+3. compile sources
+4. execute tests
+5. generate documentations
+6. package jars
+7. check dependencies
+8. lint sources.
 
 The application is assembled as jar in `target` directory, e.g. `target/tenant-security-1.0.0-SNAPSHOT.jar`.
 
