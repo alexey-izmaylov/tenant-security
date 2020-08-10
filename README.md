@@ -22,10 +22,10 @@ Each tenant has the same set of granular roles (at least one), that should be de
 
 ### Application start
 At the start application
-1. loads available Istio roles having `type=tenant-template` label or default [ServiceRole.yaml](src/main/resources/ServiceRole.yaml)
-2. creates realm, client in Keycloak
-3. configures Keycloak to include user roles into token that is validated by Istio sidecars. 
-4. optionally creates initial user and role in Keycloak
+- loads available Istio roles having `type=tenant-template` label or default [ServiceRole.yaml](src/main/resources/ServiceRole.yaml)
+- creates realm, client in Keycloak
+- configures Keycloak to include user roles into token (that is validated by Istio sidecars). 
+- optionally creates initial user and role in Keycloak
 
 ### Design
 Future improvements can bring more flexible solutions:
@@ -66,20 +66,32 @@ Spring Boot actuator: /actuator
 | DEFAULT_ROLE         | owner                                     | In the 'user context' API new tenant is created and assigned with this role |
 
 ## Build
-Required: JDK 11, Docker.
-
-### Compile, execute tests, generate documentation and package jar
+### JVM JAR
+> Required: JDK 11, Docker.
 ```shell script
 ./mvnw clean install
 ```
-Application will be assembled as JAR in `target/` directory, e.g. `target/tenant-security-1.0.0-SNAPSHOT.jar`.
+
+It will:
+0. delete build artifacts
+1. format sources
+2. compile sources
+3. execute tests
+4. generate documentations
+5. package jars
+6. check dependencies
+7. lint sources.
+
+The application is assembled as jar in `target` directory, e.g. `target/tenant-security-1.0.0-SNAPSHOT.jar`.
 
 Actual docs are generated:
 - AsciiDoc `target/generated-snippets/`
 - HTML `target/generated-docs/index.html`
 - OpenAPI `target/restdocs-spec/openapi-3.0.yml`.
 
-### Build docker image
+### Docker image
+> Required: Docker.
+
 ```shell script
-docker build .
+docker build -t tenant-security:1.0.0 .
 ```
