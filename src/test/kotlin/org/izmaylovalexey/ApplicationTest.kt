@@ -15,6 +15,7 @@ import org.springframework.context.ApplicationContextInitializer
 import org.springframework.context.ConfigurableApplicationContext
 import org.springframework.test.context.support.TestPropertySourceUtils
 import org.springframework.test.web.reactive.server.WebTestClient
+import org.springframework.test.web.reactive.server.expectBody
 import org.testcontainers.containers.GenericContainer
 import org.testcontainers.containers.wait.strategy.HttpWaitStrategy
 import org.testcontainers.lifecycle.Startable
@@ -52,6 +53,7 @@ class ApplicationTest {
     }
 
     class PropertyOverrideContextInitializer : ApplicationContextInitializer<ConfigurableApplicationContext> {
+
         override fun initialize(applicationContext: ConfigurableApplicationContext) {
             TestPropertySourceUtils.addInlinedPropertiesToEnvironment(
                 applicationContext,
@@ -65,8 +67,7 @@ class ApplicationTest {
     private val port = 8080
     private val client = WebTestClient.bindToServer().baseUrl("http://localhost:$port").build()
 
-    @BeforeAll
-    fun awaitPort() {
+    init {
         Awaitility.await("spring-boot-port")
             .pollInSameThread()
             .pollInterval(Duration.ofMillis(100))
@@ -78,7 +79,7 @@ class ApplicationTest {
             }
     }
 
-    @Test
+    @BeforeAll
     fun start() {
         main(
             arrayOf(
@@ -88,12 +89,35 @@ class ApplicationTest {
                 "--keycloak.password=keycloak"
             )
         )
-        client.get().uri("/health").exchange().expectStatus().isOk
+    }
+
+    @Test
+    fun name() {
+        client.get().uri("/")
+            .exchange()
+            .expectStatus().isOk
+            .expectBody<String>().isEqualTo("tenant-security")
+    }
+
+    @Test
+    fun health() {
+        client.get().uri("/health")
+            .exchange()
+            .expectStatus().isOk
+    }
+
+    @Test
+    fun metrics() {
+        client.get().uri("/actuator/prometheus")
+            .exchange()
+            .expectStatus().isOk
     }
 
     @AfterAll
     fun shutdown() {
-        client.post().uri("/actuator/shutdown").exchange().expectStatus().isOk
+        client.post().uri("/actuator/shutdown")
+            .exchange()
+            .expectStatus().isOk
     }
 }
 
