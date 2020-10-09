@@ -20,15 +20,15 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.reactive.asFlow
 import kotlinx.coroutines.withContext
 import mu.KLogging
-import org.izmaylovalexey.entities.Either
-import org.izmaylovalexey.entities.Error
-import org.izmaylovalexey.entities.Failure
-import org.izmaylovalexey.entities.Success
 import org.izmaylovalexey.entities.Tenant
-import org.izmaylovalexey.entities.toFailure
+import org.izmaylovalexey.services.Error
+import org.izmaylovalexey.services.Failure
+import org.izmaylovalexey.services.Result
 import org.izmaylovalexey.services.RoleService
 import org.izmaylovalexey.services.RoleTemplate
+import org.izmaylovalexey.services.Success
 import org.izmaylovalexey.services.TenantService
+import org.izmaylovalexey.services.toFailure
 import org.keycloak.admin.client.Keycloak
 import org.keycloak.representations.idm.GroupRepresentation
 import org.springframework.stereotype.Service
@@ -89,13 +89,13 @@ internal class KeycloakTenant(
             .filterIsInstance<Failure>()
             .onEach { it.log(logger, "Exception occurred during tenant creation.") }
             .flowOn(Dispatchers.Default)
-            .onEmpty<Either<Tenant>> {
+            .onEmpty<Result<Tenant>> {
                 emit(Success(actualTenant))
             }
             .first()
     }.getOrElse { it.toFailure() }
 
-    override suspend fun get(name: String) = runCatching<Either<Tenant>> {
+    override suspend fun get(name: String) = runCatching<Result<Tenant>> {
         Success(
             adapt(
                 keycloak.realm(realm)
@@ -122,7 +122,7 @@ internal class KeycloakTenant(
     override suspend fun delete(name: String) = runCatching {
         withContext(Dispatchers.Default) {
             val groupRoutine = async {
-                runCatching<Either<Unit>> {
+                runCatching<Result<Unit>> {
                     keycloak.realm(realm)
                         .groups()
                         .group(name)
@@ -155,7 +155,7 @@ internal class KeycloakTenant(
                 .flattenMerge()
                 .filterIsInstance<Failure>()
                 .onEach { it.log(logger, "Exception occurred during tenant deletion.") }
-                .onEmpty<Either<Unit>> {
+                .onEmpty<Result<Unit>> {
                     emit(groupRoutine.await())
                 }
                 .first()

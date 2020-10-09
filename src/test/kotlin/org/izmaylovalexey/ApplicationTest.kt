@@ -2,10 +2,10 @@ package org.izmaylovalexey
 
 import mu.KLogging
 import org.awaitility.Awaitility
-import org.izmaylovalexey.entities.Either
-import org.izmaylovalexey.entities.Error
-import org.izmaylovalexey.entities.Failure
-import org.izmaylovalexey.entities.Success
+import org.izmaylovalexey.services.Error
+import org.izmaylovalexey.services.Failure
+import org.izmaylovalexey.services.Result
+import org.izmaylovalexey.services.Success
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
@@ -121,10 +121,10 @@ class ApplicationTest {
     }
 }
 
-fun <T> Either<T>.unwrap(): T = when (this) {
+fun <T> Result<T>.unwrap(): T = when (this) {
     is Success -> value
     is Failure -> when (error) {
-        is Error.Exception -> fail((error as Error.Exception).exception)
+        is Error.Exception -> fail(error.exception)
         else -> fail(error::class.simpleName)
     }
 }

@@ -9,10 +9,10 @@ import kotlinx.coroutines.flow.toSet
 import kotlinx.coroutines.reactive.asFlow
 import mu.KLogging
 import org.izmaylovalexey.TenantSecurityConfig
-import org.izmaylovalexey.entities.Failure
 import org.izmaylovalexey.entities.SecurityContext
-import org.izmaylovalexey.entities.Success
 import org.izmaylovalexey.entities.Tenant
+import org.izmaylovalexey.services.Failure
+import org.izmaylovalexey.services.Success
 import org.izmaylovalexey.services.TenantService
 import org.izmaylovalexey.services.UserService
 import org.springframework.http.HttpStatus
@@ -31,7 +31,9 @@ internal class ContextHandler(
     suspend fun getContext(request: ServerRequest): ServerResponse {
         val auth = request.authHeader()
         return when {
-            auth.isEmpty() -> ServerResponse.status(HttpStatus.BAD_REQUEST).bodyValueAndAwait("Authorization header is missing")
+            auth.isEmpty() ->
+                ServerResponse.status(HttpStatus.BAD_REQUEST)
+                    .bodyValueAndAwait("Authorization header is missing")
             else -> {
                 val token = auth.first().substringAfter(" ")
                 val userId = JWT.decode(token).subject
@@ -52,7 +54,7 @@ internal class ContextHandler(
                     )
                 }
                 if (eitherUser is Failure) eitherUser.log(logger, "Failed to get user.")
-                else if (eitherAssignments is Failure) eitherAssignments.log(logger, "Failed to get assignments.")
+                if (eitherAssignments is Failure) eitherAssignments.log(logger, "Failed to get assignments.")
                 return ServerResponse.status(HttpStatus.INTERNAL_SERVER_ERROR).buildAndAwait()
             }
         }
@@ -61,7 +63,9 @@ internal class ContextHandler(
     suspend fun createAndAssign(request: ServerRequest): ServerResponse {
         val auth = request.authHeader()
         return when {
-            auth.isEmpty() -> ServerResponse.status(HttpStatus.BAD_REQUEST).bodyValueAndAwait("Authorization header is missing")
+            auth.isEmpty() ->
+                ServerResponse.status(HttpStatus.BAD_REQUEST)
+                    .bodyValueAndAwait("Authorization header is missing")
             else -> {
                 val token = auth.first().substringAfter(" ")
                 val userId = JWT.decode(token).subject

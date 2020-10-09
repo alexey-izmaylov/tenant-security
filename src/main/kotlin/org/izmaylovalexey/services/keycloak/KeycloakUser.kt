@@ -13,14 +13,14 @@ import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.flow.toSet
 import mu.KLogging
 import org.izmaylovalexey.entities.Assignment
-import org.izmaylovalexey.entities.Either
-import org.izmaylovalexey.entities.Error
-import org.izmaylovalexey.entities.Failure
-import org.izmaylovalexey.entities.Success
 import org.izmaylovalexey.entities.User
-import org.izmaylovalexey.entities.toFailure
+import org.izmaylovalexey.services.Error
+import org.izmaylovalexey.services.Failure
+import org.izmaylovalexey.services.Result
 import org.izmaylovalexey.services.RoleTemplate
+import org.izmaylovalexey.services.Success
 import org.izmaylovalexey.services.UserService
+import org.izmaylovalexey.services.toFailure
 import org.keycloak.admin.client.Keycloak
 import org.keycloak.representations.idm.CredentialRepresentation
 import org.keycloak.representations.idm.UserRepresentation
@@ -61,7 +61,7 @@ internal class KeycloakUser(
             }
             .asFlow()
 
-    override suspend fun create(user: User) = runCatching<Either<User>> {
+    override suspend fun create(user: User) = runCatching<Result<User>> {
         val sameEmailUsers = keycloak.realm(realm)
             .users()
             .search(user.email)
@@ -98,7 +98,7 @@ internal class KeycloakUser(
             .first()
     }.getOrElse { it.toFailure() }
 
-    override suspend fun get(id: String) = runCatching<Either<User>> {
+    override suspend fun get(id: String) = runCatching<Result<User>> {
         Success(
             keycloak.realm(realm)
                 .users()
@@ -119,7 +119,7 @@ internal class KeycloakUser(
         Success(Unit)
     }.getOrElse { it.toFailure() }
 
-    override suspend fun assign(user: String, tenant: String, role: String) = runCatching<Either<Unit>> {
+    override suspend fun assign(user: String, tenant: String, role: String) = runCatching<Result<Unit>> {
         keycloak.realm(realm)
             .users()
             .get(user)
@@ -177,7 +177,7 @@ internal class KeycloakUser(
             .catch { logger.error(it) { "Exception occurred during user search." } }
     }
 
-    override suspend fun getAssignments(id: String) = runCatching<Either<Flow<Assignment>>> {
+    override suspend fun getAssignments(id: String) = runCatching<Result<Flow<Assignment>>> {
         val user = keycloak.realm(realm)
             .users()
             .get(id)

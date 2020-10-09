@@ -2,11 +2,11 @@ package org.izmaylovalexey.handler
 
 import kotlinx.coroutines.reactive.awaitFirstOrDefault
 import mu.KLogging
-import org.izmaylovalexey.entities.Either
-import org.izmaylovalexey.entities.Error
-import org.izmaylovalexey.entities.Failure
-import org.izmaylovalexey.entities.Success
 import org.izmaylovalexey.entities.User
+import org.izmaylovalexey.services.Error
+import org.izmaylovalexey.services.Failure
+import org.izmaylovalexey.services.Result
+import org.izmaylovalexey.services.Success
 import org.izmaylovalexey.services.UserService
 import org.springframework.http.HttpStatus
 import org.springframework.web.reactive.function.server.ServerRequest
@@ -43,7 +43,7 @@ internal class UserHandler(private val userService: UserService) {
 
     suspend fun post(request: ServerRequest): ServerResponse {
         val input = request.bodyToMono<User>()
-            .map<Either<User>> { Success(it) }
+            .map<Result<User>> { Success(it) }
             .onErrorResume { Mono.just(Failure(Error.Exception(it))) }
             .awaitFirstOrDefault(Failure(Error.NotFound))
         return when (input) {

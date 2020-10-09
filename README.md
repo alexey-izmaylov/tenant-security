@@ -79,8 +79,8 @@ It will:
 4. execute tests
 5. generate documentations
 6. package jars
-7. check dependencies
-8. lint sources.
+7. lint sources
+8. check dependencies.
 
 The application is assembled as jar in `target` directory, e.g. `target/tenant-security-1.0.0-SNAPSHOT.jar`.
 

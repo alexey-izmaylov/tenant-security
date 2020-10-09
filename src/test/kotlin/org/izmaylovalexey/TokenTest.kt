@@ -18,10 +18,10 @@ import org.hamcrest.Matchers.hasItem
 import org.hamcrest.Matchers.hasItems
 import org.hamcrest.Matchers.not
 import org.izmaylovalexey.entities.SecurityContext
-import org.izmaylovalexey.entities.Success
 import org.izmaylovalexey.entities.Tenant
 import org.izmaylovalexey.entities.User
 import org.izmaylovalexey.handler.ContextHandler
+import org.izmaylovalexey.services.Success
 import org.izmaylovalexey.services.TenantService
 import org.izmaylovalexey.services.UserService
 import org.izmaylovalexey.services.keycloak.InitialUserProperties
@@ -121,7 +121,7 @@ class TokenTest(
                         .size >= 1
                 }
         } catch (e: ConditionTimeoutException) {
-            logger.warn { "Waiting time was finished" }
+            logger.error { "Waiting time was finished" }
         }
     }
 

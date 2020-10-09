@@ -6,10 +6,10 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.reactive.asFlow
 import kotlinx.coroutines.reactor.asFlux
 import mu.KLogging
-import org.izmaylovalexey.entities.Error
-import org.izmaylovalexey.entities.Failure
-import org.izmaylovalexey.entities.Success
 import org.izmaylovalexey.entities.User
+import org.izmaylovalexey.services.Error
+import org.izmaylovalexey.services.Failure
+import org.izmaylovalexey.services.Success
 import org.izmaylovalexey.services.UserService
 import org.keycloak.admin.client.Keycloak
 import org.keycloak.representations.idm.RoleRepresentation

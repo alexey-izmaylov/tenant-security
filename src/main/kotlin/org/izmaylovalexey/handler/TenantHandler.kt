@@ -2,11 +2,11 @@ package org.izmaylovalexey.handler
 
 import kotlinx.coroutines.reactive.awaitFirstOrDefault
 import mu.KLogging
-import org.izmaylovalexey.entities.Either
-import org.izmaylovalexey.entities.Error
-import org.izmaylovalexey.entities.Failure
-import org.izmaylovalexey.entities.Success
 import org.izmaylovalexey.entities.Tenant
+import org.izmaylovalexey.services.Error
+import org.izmaylovalexey.services.Failure
+import org.izmaylovalexey.services.Result
+import org.izmaylovalexey.services.Success
 import org.izmaylovalexey.services.TenantService
 import org.springframework.http.HttpStatus
 import org.springframework.web.reactive.function.server.ServerRequest
@@ -39,7 +39,7 @@ internal class TenantHandler(private val tenantService: TenantService) {
 
     suspend fun post(request: ServerRequest): ServerResponse {
         val input = request.bodyToMono<Tenant>()
-            .map<Either<Tenant>> { Success(it) }
+            .map<Result<Tenant>> { Success(it) }
             .onErrorResume { Mono.just(Failure(Error.Exception(it))) }
             .awaitFirstOrDefault(Failure(Error.NotFound))
         return when (input) {
@@ -78,7 +78,7 @@ internal class TenantHandler(private val tenantService: TenantService) {
                     description = it.description
                 )
             }
-            .map<Either<Tenant>> { Success(it) }
+            .map<Result<Tenant>> { Success(it) }
             .onErrorResume { Mono.just(Failure(Error.Exception(it))) }
             .awaitFirstOrDefault(Failure(Error.NotFound))
         return when (input) {

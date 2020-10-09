@@ -54,7 +54,7 @@ class InitialConfigurationTest(
                         .size >= 1
                 }
         } catch (e: ConditionTimeoutException) {
-            logger.warn { "Waiting time was finished" }
+            logger.error { "Waiting time was finished" }
         }
     }
 

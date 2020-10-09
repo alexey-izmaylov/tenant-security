@@ -12,11 +12,11 @@ import me.snowdrop.istio.api.rbac.v1alpha1.ServiceRole
 import me.snowdrop.istio.api.rbac.v1alpha1.ServiceRoleBinding
 import me.snowdrop.istio.client.IstioClient
 import mu.KLogging
-import org.izmaylovalexey.entities.Success
 import org.izmaylovalexey.entities.Tenant
-import org.izmaylovalexey.entities.toFailure
 import org.izmaylovalexey.services.RoleService
 import org.izmaylovalexey.services.RoleTemplate
+import org.izmaylovalexey.services.Success
+import org.izmaylovalexey.services.toFailure
 import org.springframework.stereotype.Service
 
 @Service

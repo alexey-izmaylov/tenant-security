@@ -262,18 +262,6 @@
         </executions>
       </plugin>
       <plugin>
-        <groupId>org.owasp</groupId>
-        <artifactId>dependency-check-maven</artifactId>
-        <version>5.3.2</version>
-        <executions>
-          <execution>
-            <goals>
-              <goal>check</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
         <groupId>com.github.gantsign.maven</groupId>
         <artifactId>ktlint-maven-plugin</artifactId>
         <version>1.5.2</version>
@@ -282,6 +270,18 @@
             <id>format-and-check</id>
             <goals>
               <goal>format</goal>
+              <goal>check</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.owasp</groupId>
+        <artifactId>dependency-check-maven</artifactId>
+        <version>5.3.2</version>
+        <executions>
+          <execution>
+            <goals>
               <goal>check</goal>
             </goals>
           </execution>

@@ -1,13 +1,13 @@
 package org.izmaylovalexey.services.keycloak
 
 import mu.KLogging
-import org.izmaylovalexey.entities.Either
-import org.izmaylovalexey.entities.Error
-import org.izmaylovalexey.entities.Failure
-import org.izmaylovalexey.entities.Success
 import org.izmaylovalexey.entities.Tenant
-import org.izmaylovalexey.entities.toFailure
+import org.izmaylovalexey.services.Error
+import org.izmaylovalexey.services.Failure
+import org.izmaylovalexey.services.Result
 import org.izmaylovalexey.services.RoleService
+import org.izmaylovalexey.services.Success
+import org.izmaylovalexey.services.toFailure
 import org.keycloak.admin.client.Keycloak
 import org.keycloak.representations.idm.RoleRepresentation
 import org.springframework.stereotype.Service
@@ -27,7 +27,7 @@ internal class KeycloakRole(val keycloak: Keycloak, keycloakProperties: Keycloak
         Success(Unit)
     }.getOrElse { it.toFailure() }
 
-    override suspend fun delete(tenant: String, role: String) = runCatching<Either<Unit>> {
+    override suspend fun delete(tenant: String, role: String) = runCatching<Result<Unit>> {
         val name = "$tenant.$role"
         logger.info { "will delete Keycloak Role: $name" }
         keycloak.realm(realm)
