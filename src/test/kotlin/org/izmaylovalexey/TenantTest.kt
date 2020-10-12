@@ -85,7 +85,7 @@ class TenantTest(
             .consumeWith {
                 document<Tenant>(
                     "tenants/{methodName}",
-                    snippets = *arrayOf(
+                    snippets = arrayOf(
                         requestFields(
                             fieldWithPath("name").description("Name of tenant").optional(),
                             fieldWithPath("displayedName").description("Displayed name of tenant").optional(),
@@ -128,7 +128,7 @@ class TenantTest(
             .consumeWith {
                 document<List<Tenant>>(
                     "tenants/{methodName}",
-                    snippets = *arrayOf(
+                    snippets = arrayOf(
                         responseFields(
                             fieldWithPath("[]").description("Tenant list"),
                             fieldWithPath("[].name").description("Name of tenant"),
@@ -152,7 +152,7 @@ class TenantTest(
             .consumeWith {
                 document<Tenant>(
                     "tenants/{methodName}",
-                    snippets = *arrayOf(
+                    snippets = arrayOf(
                         pathParameters(
                             parameterWithName("name").description("Name of the tenant to be read")
                         ),
@@ -187,7 +187,7 @@ class TenantTest(
             .consumeWith {
                 document<ByteArray>(
                     "tenants/{methodName}",
-                    snippets = *arrayOf(
+                    snippets = arrayOf(
                         pathParameters(
                             parameterWithName("name").description("Name of the tenant to be deleted")
                         )
@@ -279,7 +279,7 @@ class TenantTest(
             .consumeWith {
                 document<Tenant>(
                     "tenants/{methodName}",
-                    snippets = *arrayOf(
+                    snippets = arrayOf(
                         pathParameters(
                             parameterWithName("name").description("Name of the tenant to be updated")
                         ),
