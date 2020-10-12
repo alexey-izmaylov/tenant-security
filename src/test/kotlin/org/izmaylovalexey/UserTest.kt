@@ -96,7 +96,7 @@ class UserTest(
             .consumeWith {
                 document<User>(
                     "users/{methodName}",
-                    snippets = *arrayOf(
+                    snippets = arrayOf(
                         requestFields(
                             fieldWithPath("id").description("Optional id of user").optional(),
                             fieldWithPath("email").description("Email of user"),
@@ -151,7 +151,7 @@ class UserTest(
             .consumeWith {
                 document<User>(
                     "users/{methodName}",
-                    snippets = *arrayOf(
+                    snippets = arrayOf(
                         pathParameters(
                             parameterWithName("id").description("Id of the user to be read")
                         ),
@@ -179,7 +179,7 @@ class UserTest(
             .consumeWith {
                 document<ByteArray>(
                     "users/{methodName}",
-                    snippets = *arrayOf(
+                    snippets = arrayOf(
                         pathParameters(
                             parameterWithName("id").description("Id of the user to be deleted")
                         )
@@ -204,7 +204,7 @@ class UserTest(
             .consumeWith {
                 document<ByteArray>(
                     "users/{methodName}",
-                    snippets = *arrayOf(
+                    snippets = arrayOf(
                         pathParameters(
                             parameterWithName("id").description("Id of user"),
                             parameterWithName("tenant-name").description("Name of tenant"),
@@ -305,7 +305,7 @@ class UserTest(
             .consumeWith {
                 document<List<Assignment>>(
                     "users/{methodName}",
-                    snippets = *arrayOf(
+                    snippets = arrayOf(
                         requestParameters(
                             parameterWithName("tenant").description("Name of the tenant")
                         ),
@@ -379,7 +379,7 @@ class UserTest(
             .consumeWith {
                 document<ByteArray>(
                     "users/{methodName}",
-                    snippets = *arrayOf(
+                    snippets = arrayOf(
                         pathParameters(
                             parameterWithName("id").description("Id of the user to be evicted"),
                             parameterWithName("tenant-name").description("Name of tenant"),
@@ -477,7 +477,7 @@ class UserTest(
             .consumeWith<WebTestClient.ListBodySpec<User>>(
                 document<List<User>>(
                     "users/search-by-string",
-                    snippets = *arrayOf(
+                    snippets = arrayOf(
                         requestParameters(
                             parameterWithName("searchingString").description("Username of the user")
                         ),
@@ -561,7 +561,7 @@ class UserTest(
             .consumeWith<WebTestClient.ListBodySpec<User>>(
                 document<List<User>>(
                     "users/search-by-all",
-                    snippets = *arrayOf(
+                    snippets = arrayOf(
                         requestParameters(
                             parameterWithName("firstName").description("First name of the user"),
                             parameterWithName("lastName").description("Last name of the user"),
@@ -622,7 +622,7 @@ class UserTest(
             .consumeWith<WebTestClient.ListBodySpec<Assignment>>(
                 document<List<Assignment>>(
                     "users/{methodName}",
-                    snippets = *arrayOf(
+                    snippets = arrayOf(
                         pathParameters(
                             parameterWithName("id").description("Id of the user")
                         ),

@@ -4,7 +4,10 @@ import com.auth0.jwt.JWT
 import com.epages.restdocs.apispec.WebTestClientRestDocumentationWrapper.document
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
+import kotlinx.coroutines.flow.filterIsInstance
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.toSet
 import kotlinx.coroutines.runBlocking
 import mu.KLogging
@@ -181,7 +184,7 @@ class TokenTest(
                     credential = credential
                 )
             ).unwrap()
-            val tenants = listOf(1..3)
+            val tenants = flowOf(1..3)
                 .map {
                     tenantService.create(
                         Tenant(
@@ -208,7 +211,7 @@ class TokenTest(
             .consumeWith {
                 document<SecurityContext>(
                     "context/{methodName}",
-                    snippets = *arrayOf(
+                    snippets = arrayOf(
                         requestHeaders(headerWithName(HttpHeaders.AUTHORIZATION).description("JSON Web Token")),
                         responseFields(
                             subsectionWithPath("user").description("User entity"),
@@ -255,7 +258,7 @@ class TokenTest(
             .consumeWith {
                 document<Tenant>(
                     "context/{methodName}",
-                    snippets = *arrayOf(
+                    snippets = arrayOf(
                         requestHeaders(headerWithName(HttpHeaders.AUTHORIZATION).description("JSON Web Token")),
                         requestFields(
                             fieldWithPath("name").description("Name of tenant").optional(),

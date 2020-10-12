@@ -37,6 +37,7 @@ class ApplicationTest {
 
         val keycloak = GenericContainer<Nothing>("${registry}jboss/keycloak:10.0.1").apply {
             withExposedPorts(8080)
+            withEnv("DB_VENDOR", "h2")
             withEnv("KEYCLOAK_USER", "keycloak")
             withEnv("KEYCLOAK_PASSWORD", "keycloak")
             waitingFor(
