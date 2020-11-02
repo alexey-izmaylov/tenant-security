@@ -51,7 +51,7 @@ internal class UserHandler(private val userService: UserService) {
                 is Success -> ServerResponse.status(HttpStatus.OK).bodyValueAndAwait(result.value)
                 is Failure -> when (result.error) {
                     is Error.EmailCollision ->
-                        ServerResponse.status(HttpStatus.BAD_REQUEST)
+                        ServerResponse.status(HttpStatus.CONFLICT)
                             .bodyValueAndAwait("This email is used.")
                     else -> {
                         result.log(logger, "Failed to create user: ${input.value}.")

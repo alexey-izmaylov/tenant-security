@@ -19,6 +19,7 @@ import org.junit.jupiter.api.TestInstance
 import org.keycloak.admin.client.Keycloak
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.http.HttpStatus
 import org.springframework.restdocs.RestDocumentationContextProvider
 import org.springframework.restdocs.operation.preprocess.Preprocessors
 import org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath
@@ -133,7 +134,7 @@ class UserTest(
             .uri("/user")
             .body(Mono.just(user2))
             .exchange()
-            .expectStatus().isBadRequest
+            .expectStatus().isEqualTo(HttpStatus.CONFLICT)
             .expectBody<String>().isEqualTo("This email is used.")
     }
 
