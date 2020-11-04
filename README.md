@@ -1,3 +1,5 @@
+![CI Branch Build](https://github.com/alexey-izmaylov/tenant-security/workflows/CI%20Branch%20Build/badge.svg)
+
 # Tenant Security
 Microservice handles role-based access control (RBAC) policies for multi-tenant environment.
 
