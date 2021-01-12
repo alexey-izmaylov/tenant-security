@@ -4,15 +4,19 @@
 Microservice handles role-based access control (RBAC) policies for multi-tenant environment.
 
 ## Architecture
-Tenant reflects a resource group.
-Several roles can be related to one resource group.
+Tenant is resource group.
 For HTTP, gRPC services it means different paths (`/tenant/{name}/*`, `*/tenant/{name}/sample/path`), hosts, methods, etc.
-Request with token is filtered by authentication and authorization policies when user is trying to access tenant resource.
+It conforms with REST.
+
+Also, resource group requires security.
+Several roles can be related to one tenant.
 
 Tenant-security allows to:
 1. create tenant with set of roles
 2. create user
 3. assign user to tenant with specific role.
+
+Request with token will be filtered by authentication and authorization policies when user tries to access tenant resource.
 
 This microservice builds all necessary entities under the hood.
 Tenant is represented as:

@@ -87,7 +87,7 @@ class ApplicationTest {
                 "--server.port=$port",
                 "--spring.data.mongodb.uri=mongodb://${mongo.containerIpAddress}:${mongo.firstMappedPort}/tenant-security",
                 "--keycloak.uri=http://${keycloak.containerIpAddress}:${keycloak.firstMappedPort}/auth",
-                "--keycloak.password=keycloak"
+                "--keycloak.password=keycloak",
             )
         )
     }
