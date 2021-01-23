@@ -1,6 +1,7 @@
 package org.izmaylovalexey
 
 import org.izmaylovalexey.handler.ContextHandler
+import org.izmaylovalexey.handler.RoleTemplateHandler
 import org.izmaylovalexey.handler.TenantHandler
 import org.izmaylovalexey.handler.UserHandler
 import org.springframework.boot.autoconfigure.SpringBootApplication
@@ -30,6 +31,8 @@ fun main(args: Array<String>) {
             beans {
                 bean<TenantHandler>()
                 bean(::tenantRoute)
+                bean<RoleTemplateHandler>()
+                bean(::roleTemplateRoute)
                 bean<UserHandler>()
                 bean(::userRoute)
                 bean<ContextHandler>()
@@ -54,6 +57,10 @@ internal fun tenantRoute(handler: TenantHandler) = coRouter {
         method(GET, handler::getAll)
         (method(POST) and contentType(MediaType.APPLICATION_JSON)).invoke(handler::post)
     }
+}
+
+internal fun roleTemplateRoute(handler: RoleTemplateHandler) = coRouter {
+    GET("/role") { handler.list() }
 }
 
 internal fun userRoute(handler: UserHandler) = coRouter {

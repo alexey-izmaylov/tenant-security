@@ -1,4 +1,4 @@
-= Tenant Security API Documentation
+= Tenant Security REST API
 Alexey Izmaylov <aleksey.izmaylove@gmail.com>
 1.0.0
 :toc: left
@@ -121,6 +121,28 @@ include::{snippets}/tenants/delete-tenant/http-response.adoc[]
 ==== CURL sample
 
 include::{snippets}/tenants/delete-tenant/curl-request.adoc[]
+
+== Role Templates API
+
+=== List
+
+Obtains a list of role templates registered in the application.
+
+==== Response Body
+
+include::{snippets}/roles/list/response-fields.adoc[]
+
+==== Sample Request
+
+include::{snippets}/roles/list/http-request.adoc[]
+
+==== Sample Response
+
+include::{snippets}/roles/list/http-response.adoc[]
+
+==== CURL sample
+
+include::{snippets}/roles/list/curl-request.adoc[]
 
 == Users API
 

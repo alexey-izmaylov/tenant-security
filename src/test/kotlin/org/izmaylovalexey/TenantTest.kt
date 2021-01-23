@@ -72,8 +72,9 @@ class TenantTest(
     @Test
     fun `post-tenant`() {
         val tenant = Tenant(
+            name = "tenant-name",
             displayedName = "My Project",
-            description = UUID.randomUUID().toString()
+            description = "top secret"
         )
         client
             .post()
@@ -265,6 +266,7 @@ class TenantTest(
     fun `update-tenant`() {
         val tenant = post()
         val updatedTenant = Tenant(
+            name = tenant.name,
             displayedName = "Updated Tenant",
             description = tenant.description
         )
@@ -350,8 +352,9 @@ class TenantTest(
 
     private fun post(): Tenant {
         val tenant = Tenant(
+            name = UUID.randomUUID().toString(),
             displayedName = "My Project",
-            description = UUID.randomUUID().toString()
+            description = "top secret"
         )
         val actual = client
             .post()

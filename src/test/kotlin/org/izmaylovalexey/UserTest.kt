@@ -687,7 +687,12 @@ class UserTest(
     }
 
     private fun newTenant(): String = runBlocking {
-        tenantService.create(Tenant()).unwrap().name
+        tenantService.create(
+            Tenant(
+                name = UUID.randomUUID().toString(),
+                displayedName = "resource-group"
+            )
+        ).unwrap().name
     }
 
     private fun assign(user: User, tenant: String, role: String): Assignment {

@@ -126,6 +126,7 @@ fun <T> Result<T>.unwrap(): T = when (this) {
     is Success -> value
     is Failure -> when (error) {
         is Error.Exception -> fail(error.exception)
+        is Error.Message -> fail(error.message)
         else -> fail(error::class.simpleName)
     }
 }

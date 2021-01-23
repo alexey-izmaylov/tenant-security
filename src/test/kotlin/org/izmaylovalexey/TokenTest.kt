@@ -4,8 +4,8 @@ import com.auth0.jwt.JWT
 import com.epages.restdocs.apispec.WebTestClientRestDocumentationWrapper.document
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
+import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.filterIsInstance
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.toSet
@@ -159,7 +159,7 @@ class TokenTest(
                     credential = credential
                 )
             ).unwrap()
-            val tenant = tenantService.create(Tenant()).unwrap()
+            val tenant = tenantService.create(Tenant(UUID.randomUUID().toString())).unwrap()
             listOf("developer", "maintainer")
                 .onEach { userService.assign(user.id, tenant.name, it) }
                 .map { "${tenant.name}.$it" }
@@ -184,10 +184,11 @@ class TokenTest(
                     credential = credential
                 )
             ).unwrap()
-            val tenants = flowOf(1..3)
+            val tenants = (1..3).asFlow()
                 .map {
                     tenantService.create(
                         Tenant(
+                            name = UUID.randomUUID().toString(),
                             displayedName = "tenant $it",
                             description = it.toString()
                         )
@@ -199,6 +200,7 @@ class TokenTest(
                 .toSet()
             SecurityContext(user, tenants)
         }
+        assertEquals(3, securityContext.tenants.size)
 
         val token = getToken(email, credential)
         contextClient
@@ -251,7 +253,15 @@ class TokenTest(
             .post()
             .uri("/context/tenant")
             .header("Authorization", "Bearer $token")
-            .body(Mono.just(Tenant()))
+            .body(
+                Mono.just(
+                    Tenant(
+                        name = UUID.randomUUID().toString(),
+                        displayedName = "Galaxy",
+                        description = "Resource group description"
+                    )
+                )
+            )
             .exchange()
             .expectStatus().isOk
             .expectBody<Tenant>()

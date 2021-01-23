@@ -14,13 +14,13 @@ import me.snowdrop.istio.client.IstioClient
 import mu.KLogging
 import org.izmaylovalexey.entities.Tenant
 import org.izmaylovalexey.services.RoleService
-import org.izmaylovalexey.services.RoleTemplate
+import org.izmaylovalexey.services.RoleTemplateService
 import org.izmaylovalexey.services.Success
 import org.izmaylovalexey.services.toFailure
 import org.springframework.stereotype.Service
 
 @Service
-internal class IstioRole(val istioClient: IstioClient) : RoleService, RoleTemplate {
+internal class IstioRole(val istioClient: IstioClient) : RoleService, RoleTemplateService {
 
     private val mapper = YAMLMapper().registerKotlinModule()
 

@@ -20,7 +20,7 @@ paths:
         required: true
         schema:
           type: string
-        example: Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJVNHQxSmhHVGRsZ2VuMXI4QXVWbVI1ckc4UkNsYlJNM3U5dEh5MGlvckRFIn0.eyJleHAiOjE1OTI3NDY2MDEsImlhdCI6MTU5Mjc0NjMwMSwianRpIjoiMWY1ZDE4YmQtZGUxZC00MTU0LWEzMWYtNmEzMWMwOWI1MmM4IiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDozMjc3OS9hdXRoL3JlYWxtcy90ZXN0IiwiYXVkIjoiYWNjb3VudCIsInN1YiI6Ijc5MWRhZDYwLWZjZDQtNDVhZC05YTQ4LTQxOTRiYWQ1Yzc4ZiIsInR5cCI6IkJlYXJlciIsImF6cCI6ImZyb250ZW5kIiwic2Vzc2lvbl9zdGF0ZSI6IjZhZGRlZGIyLTA2NzQtNDczOC1hZTAyLWZjZTY3NDA2OWRmOSIsImFjciI6IjEiLCJyZXNvdXJjZV9hY2Nlc3MiOnsiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19fSwic2NvcGUiOiJlbWFpbCBwcm9maWxlIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsInJvbGVzIjpbIm9mZmxpbmVfYWNjZXNzIiwidW1hX2F1dGhvcml6YXRpb24iLCJmZmUyNWU4ZC1kN2MzLTRiNDctYjQ2Mi04OWFiY2Q1MGVlNjQuZGV2ZWxvcGVyIl0sIm5hbWUiOiJBbGV4ZXkgSXptYXlsb3YiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiI3MTA5NGQ1NC1mMzM2LTRhYjAtODBmOC00MDEzNTZiOTU5MjdAZ21haWwuY29tIiwiZ2l2ZW5fbmFtZSI6IkFsZXhleSIsImZhbWlseV9uYW1lIjoiSXptYXlsb3YiLCJlbWFpbCI6IjcxMDk0ZDU0LWYzMzYtNGFiMC04MGY4LTQwMTM1NmI5NTkyN0BnbWFpbC5jb20ifQ.a6b58si7ZKAWzFCIdhF1fw80h1DDgaKo8Fx02zaydODjAN1N9KeDiVkYJRE5VqC0zPvO3WhVAdWnuA-br8ZHDnc_laXMi_Q7Ools218Rufi8aPuiadPdzBaBgSZT_C94ujph70NFgQnyG7ZV1BKxd2B4qnB5c41YeQFZCF4O7T1T20_LPHQoJNCo8DQztKMuBtUCbC3e4qgFxhN5CzYHwhQ4icbvdcT_spN_2HzLW8p1ZoZe4mJ6DtCDCEqwJjl8ot3sTHZIxze3F8G5b4GE_xuT9GWxRJ50pXjb-26zkWkVkoHTryPfLp2tZrB5r0Tv1Yioy43jsTHdNximBGmquw
+        example: Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJrQmdOR0oxUU9HczJnWlo3bEIyQmU5d1JLY01zeWl3a3dnWmQ3Vjg0WGFzIn0.eyJleHAiOjE2MTEzNjUyNTUsImlhdCI6MTYxMTM2NDk1NSwianRpIjoiY2NiYWE4OTQtZDZlYi00ODQ2LThmZTktN2Y5MTQ4NjFlZGYxIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo0OTI0OC9hdXRoL3JlYWxtcy90ZXN0IiwiYXVkIjoiYWNjb3VudCIsInN1YiI6IjdiMDRmNTJjLTg5YmQtNGNjNi04YTQ1LTBiMzE4ZDJlOWU3NyIsInR5cCI6IkJlYXJlciIsImF6cCI6ImZyb250ZW5kIiwic2Vzc2lvbl9zdGF0ZSI6IjFkZWNhYzk4LTJlYzMtNGQwMi1hN2QzLWQzNTM0NTk2MDU3YSIsImFjciI6IjEiLCJyZXNvdXJjZV9hY2Nlc3MiOnsiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19fSwic2NvcGUiOiJlbWFpbCBwcm9maWxlIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsInJvbGVzIjpbIjU3MzU3MTM3LTVlNDctNDZlYy1iMmI3LTBkMjc0ZTczODA4Ny5kZXZlbG9wZXIiLCJvZmZsaW5lX2FjY2VzcyIsIjEyM2I5MjMzLTZhNWQtNDZlNC1iYWRlLTFmNjk3YTZjNmM2Zi5kZXZlbG9wZXIiLCJ1bWFfYXV0aG9yaXphdGlvbiIsImE2Mzk4ZDFjLTFjZTMtNDVjOC05ZjlmLThkMjRjMWM4YTcxYi5kZXZlbG9wZXIiXSwibmFtZSI6IkFsZXhleSBJem1heWxvdiIsInByZWZlcnJlZF91c2VybmFtZSI6IjNkNGZiNTYwLWI3YzQtNGEzYS1hNTIyLTUxNDU0MzgyOTkwMEBnbWFpbC5jb20iLCJnaXZlbl9uYW1lIjoiQWxleGV5IiwiZmFtaWx5X25hbWUiOiJJem1heWxvdiIsImVtYWlsIjoiM2Q0ZmI1NjAtYjdjNC00YTNhLWE1MjItNTE0NTQzODI5OTAwQGdtYWlsLmNvbSJ9.ofPYqZjO-jyYuKCsEGDDcr-ef7Wxrxst3mbGJRZwSvGiczEM6SRxmlTGmW2Z0xGTb1W-XOVmWWZby182fTibCh03MAKhK7cGTILpt26iohEahmMbPS-iFTO7UpSJ_f3pvT54OmjKdhabdFSiY78Pa7Cz2oxx-0VtqjmZSIeSS1dB9ecy2rnlQyh56ubz4U2Pyy3X9qOXoERiSwZCpGFzXYfTYb7TcOpzseIIRQcHaS6mH-UOGj_L4ghwiAcZg21OQWbyZAG4IOIpwe1rX-EDB4vukD-EIAGvePIG33JiMNgtEhFHbFv3980p8AnxrE64XxXZBoWsSvwA9j-JeNaPgw
       responses:
         200:
           description: "200"
@@ -30,13 +30,17 @@ paths:
                 $ref: '#/components/schemas/context-1041425929'
               examples:
                 context/get-context-by-token:
-                  value: "{\r\n  \"user\" : {\r\n    \"id\" : \"791dad60-fcd4-45ad-9a48-4194bad5c78f\"\
-                    ,\r\n    \"email\" : \"71094d54-f336-4ab0-80f8-401356b95927@gmail.com\"\
+                  value: "{\r\n  \"user\" : {\r\n    \"id\" : \"7b04f52c-89bd-4cc6-8a45-0b318d2e9e77\"\
+                    ,\r\n    \"email\" : \"3d4fb560-b7c4-4a3a-a522-514543829900@gmail.com\"\
                     ,\r\n    \"firstName\" : \"Alexey\",\r\n    \"lastName\" : \"\
                     Izmaylov\",\r\n    \"credential\" : \"*****\"\r\n  },\r\n  \"\
-                    tenants\" : [ {\r\n    \"name\" : \"ffe25e8d-d7c3-4b47-b462-89abcd50ee64\"\
-                    ,\r\n    \"displayedName\" : \"tenant 1..3\",\r\n    \"description\"\
-                    \ : \"1..3\"\r\n  } ]\r\n}"
+                    tenants\" : [ {\r\n    \"name\" : \"123b9233-6a5d-46e4-bade-1f697a6c6c6f\"\
+                    ,\r\n    \"displayedName\" : \"tenant 2\",\r\n    \"description\"\
+                    \ : \"2\"\r\n  }, {\r\n    \"name\" : \"a6398d1c-1ce3-45c8-9f9f-8d24c1c8a71b\"\
+                    ,\r\n    \"displayedName\" : \"tenant 1\",\r\n    \"description\"\
+                    \ : \"1\"\r\n  }, {\r\n    \"name\" : \"57357137-5e47-46ec-b2b7-0d274e738087\"\
+                    ,\r\n    \"displayedName\" : \"tenant 3\",\r\n    \"description\"\
+                    \ : \"3\"\r\n  } ]\r\n}"
       security:
       - bearerAuthJWT: []
   /context/tenant:
@@ -51,31 +55,47 @@ paths:
         required: true
         schema:
           type: string
-        example: Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJVNHQxSmhHVGRsZ2VuMXI4QXVWbVI1ckc4UkNsYlJNM3U5dEh5MGlvckRFIn0.eyJleHAiOjE1OTI3NDY2MDIsImlhdCI6MTU5Mjc0NjMwMiwianRpIjoiMjI0ZTdkMDYtNGRhNy00MWIwLTg3ODQtNmRjYzRmMDM1YjA3IiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDozMjc3OS9hdXRoL3JlYWxtcy90ZXN0IiwiYXVkIjoiYWNjb3VudCIsInN1YiI6IjJhNDljMmUzLTY1NjYtNGFhNy1hMWEwLTBiNTU0YzgzMGFiYyIsInR5cCI6IkJlYXJlciIsImF6cCI6ImZyb250ZW5kIiwic2Vzc2lvbl9zdGF0ZSI6IjYxMGQ4MDlkLWM4MjYtNDgwZC05ODY3LThmMzAyMzRhZDI4OSIsImFjciI6IjEiLCJyZXNvdXJjZV9hY2Nlc3MiOnsiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19fSwic2NvcGUiOiJlbWFpbCBwcm9maWxlIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsInJvbGVzIjpbIm9mZmxpbmVfYWNjZXNzIiwidW1hX2F1dGhvcml6YXRpb24iXSwibmFtZSI6IkFsZXhleSBJem1heWxvdiIsInByZWZlcnJlZF91c2VybmFtZSI6IjJmZTM1YjNmLTBlYjctNGYzMS05NmFhLTZkZTJlZjBkYTY1ZkBnbWFpbC5jb20iLCJnaXZlbl9uYW1lIjoiQWxleGV5IiwiZmFtaWx5X25hbWUiOiJJem1heWxvdiIsImVtYWlsIjoiMmZlMzViM2YtMGViNy00ZjMxLTk2YWEtNmRlMmVmMGRhNjVmQGdtYWlsLmNvbSJ9.jnyzDG-0_5agXXq10i--BIVeKLk3Xfz1h_lmRkwodJwaFDLmgKInmG67YUI_ad9Xxg5IBR1QsTO4rNiL7cunLeWay6gRnu6V04KRK33hrQ6Ak3v3nTMlIhkrmqqPLwkEgbuqa0jGn2xDspy3HiBOGhSXQmINPFre4WjdtnBbVc7exTzrQSElKKSSsxMqV77Zqk-yQUfNtKb6almrJGsZFWqlcS-lpExRQpe6aMC3N0zTbDlWCicAi2WZUz2stMkAtVRAu_f1smb21xi8g4DQRCQqkW0pgrZIZyPcCntMi9Pkf1DmntlgFponWHDXNAmwjUsBfurb9XDzu3aSWMj5Tg
+        example: Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJrQmdOR0oxUU9HczJnWlo3bEIyQmU5d1JLY01zeWl3a3dnWmQ3Vjg0WGFzIn0.eyJleHAiOjE2MTEzNjUyNTYsImlhdCI6MTYxMTM2NDk1NiwianRpIjoiZDcxZTI0Y2EtZTY2MC00MWIzLWIzNDEtODdmNjE0OTM1N2Q4IiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo0OTI0OC9hdXRoL3JlYWxtcy90ZXN0IiwiYXVkIjoiYWNjb3VudCIsInN1YiI6IjhhNTI2NTQ4LTQwYjQtNDNiZC1iMzQwLTJkNGE0YWNjYzFlNiIsInR5cCI6IkJlYXJlciIsImF6cCI6ImZyb250ZW5kIiwic2Vzc2lvbl9zdGF0ZSI6IjBkMjllY2EzLTZiZWYtNGE0Yi1iYmI1LThjMTcwZjZlYzFiNiIsImFjciI6IjEiLCJyZXNvdXJjZV9hY2Nlc3MiOnsiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19fSwic2NvcGUiOiJlbWFpbCBwcm9maWxlIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsInJvbGVzIjpbIm9mZmxpbmVfYWNjZXNzIiwidW1hX2F1dGhvcml6YXRpb24iXSwibmFtZSI6IkFsZXhleSBJem1heWxvdiIsInByZWZlcnJlZF91c2VybmFtZSI6IjU4YTE0NjJiLTM1YWQtNDRjMS1hMDg5LTQ3MDAwNjViMDVmYUBnbWFpbC5jb20iLCJnaXZlbl9uYW1lIjoiQWxleGV5IiwiZmFtaWx5X25hbWUiOiJJem1heWxvdiIsImVtYWlsIjoiNThhMTQ2MmItMzVhZC00NGMxLWEwODktNDcwMDA2NWIwNWZhQGdtYWlsLmNvbSJ9.gWjWo3RBopUz-AKgYeTEJ3WMTkZ2lz9PPePZjG3CrGi8FfaYdrs98NxVLBUE4PN485lYzD05mT8elx8zLHjbYE-OImXHRoHc5lsvbIA9gteDF8XwEcwKsqww_9juhHqshbIB99u8bYRsQRl3VqrlBuvzYT9cQ7Yv29GudVirZzXTt3ihi4pfqxG8azGbSOH2cbJPSwJ9ItJS7xwZQW5YG1J4QKLyqiPbb7uYmSkANKfvS2TNBJ5gZIfDlA5zLcShPerPhOEOnn-J2rmU76D22WNDLom1wtmv98XC30sKdKVL_Ts15tMqkmWMjBApAV-kzzkZAVfrW5wRPqiF_PgVPQ
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/tenant-name-1072526318'
+              $ref: '#/components/schemas/tenant-1072526318'
             examples:
               context/create-tenant-and-assign-to-current-user:
-                value: "{\r\n  \"name\" : \"493c08d3-95b8-4139-b88c-198de0527867\"\
-                  ,\r\n  \"displayedName\" : \"493c08d3-95b8-4139-b88c-198de0527867\"\
-                  ,\r\n  \"description\" : \"\"\r\n}"
+                value: "{\r\n  \"name\" : \"9309523a-caae-4a7c-930a-c0884d899a49\"\
+                  ,\r\n  \"displayedName\" : \"Galaxy\",\r\n  \"description\" : \"\
+                  Resource group description\"\r\n}"
       responses:
         200:
           description: "200"
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/tenant-name-1072526318'
+                $ref: '#/components/schemas/tenant-1072526318'
               examples:
                 context/create-tenant-and-assign-to-current-user:
-                  value: "{\r\n  \"name\" : \"034d4853-2630-4f37-935d-00e4f2e13a1b\"\
-                    ,\r\n  \"displayedName\" : \"493c08d3-95b8-4139-b88c-198de0527867\"\
-                    ,\r\n  \"description\" : \"\"\r\n}"
+                  value: "{\r\n  \"name\" : \"75277a95-499c-4b2e-9e3b-46fc9ced15ce\"\
+                    ,\r\n  \"displayedName\" : \"Galaxy\",\r\n  \"description\" :\
+                    \ \"Resource group description\"\r\n}"
       security:
       - bearerAuthJWT: []
+  /role:
+    get:
+      tags:
+      - role
+      operationId: roles/list
+      responses:
+        200:
+          description: "200"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/role1199510443'
+              examples:
+                roles/list:
+                  value: "[ {\r\n  \"name\" : \"maintainer\"\r\n}, {\r\n  \"name\"\
+                    \ : \"owner\"\r\n}, {\r\n  \"name\" : \"developer\"\r\n} ]"
   /tenant:
     get:
       tags:
@@ -90,14 +110,13 @@ paths:
                 $ref: '#/components/schemas/tenant-625772535'
               examples:
                 tenants/get-all-tenants:
-                  value: "[ {\r\n  \"name\" : \"11711166-1457-46b1-9490-a7aa67a4e597\"\
+                  value: "[ {\r\n  \"name\" : \"e00df63f-aa56-4b40-8675-f0a1d0a7bfb5\"\
                     ,\r\n  \"displayedName\" : \"My Project\",\r\n  \"description\"\
-                    \ : \"fe93048c-9fb2-4f78-a3bd-1e1736a1341f\"\r\n}, {\r\n  \"name\"\
-                    \ : \"f0ff92b7-d61c-415b-9078-65d097ecdd68\",\r\n  \"displayedName\"\
-                    \ : \"My Project\",\r\n  \"description\" : \"d4e4e850-d2b6-4088-b7ea-78c9582f595b\"\
-                    \r\n}, {\r\n  \"name\" : \"95177a6d-ba66-44cc-9b27-9d58bbc5cd10\"\
+                    \ : \"top secret\"\r\n}, {\r\n  \"name\" : \"110304fc-f763-458f-becc-735db4bb559d\"\
                     ,\r\n  \"displayedName\" : \"My Project\",\r\n  \"description\"\
-                    \ : \"c0a3ff63-0529-4b83-805c-f24770a493ea\"\r\n} ]"
+                    \ : \"top secret\"\r\n}, {\r\n  \"name\" : \"c8aab573-3192-4a43-9223-39345aa46fda\"\
+                    ,\r\n  \"displayedName\" : \"My Project\",\r\n  \"description\"\
+                    \ : \"top secret\"\r\n} ]"
     post:
       tags:
       - tenant
@@ -106,24 +125,23 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/tenant-name-1072526318'
+              $ref: '#/components/schemas/tenant-1072526318'
             examples:
               tenants/post-tenant:
-                value: "{\r\n  \"name\" : \"278564c7-b69f-4a5b-ae16-81af2cc050df\"\
-                  ,\r\n  \"displayedName\" : \"My Project\",\r\n  \"description\"\
-                  \ : \"efba91cb-9d20-4588-9f98-6ab1ab54a78a\"\r\n}"
+                value: "{\r\n  \"name\" : \"tenant-name\",\r\n  \"displayedName\"\
+                  \ : \"My Project\",\r\n  \"description\" : \"top secret\"\r\n}"
       responses:
         200:
           description: "200"
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/tenant-name-1072526318'
+                $ref: '#/components/schemas/tenant-1072526318'
               examples:
                 tenants/post-tenant:
-                  value: "{\r\n  \"name\" : \"f67c6d39-7dc5-4cb3-9570-05cbd8e54ce2\"\
+                  value: "{\r\n  \"name\" : \"46ba1513-8167-439d-a595-7fb2ba91a578\"\
                     ,\r\n  \"displayedName\" : \"My Project\",\r\n  \"description\"\
-                    \ : \"efba91cb-9d20-4588-9f98-6ab1ab54a78a\"\r\n}"
+                    \ : \"top secret\"\r\n}"
   /tenant/{name}:
     get:
       tags:
@@ -142,12 +160,12 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/tenant-name-1072526318'
+                $ref: '#/components/schemas/tenant-1072526318'
               examples:
                 tenants/get-tenant:
-                  value: "{\r\n  \"name\" : \"d35b8a7f-1ef3-474e-a82f-bd445cc38b4a\"\
+                  value: "{\r\n  \"name\" : \"d274336d-46c3-47df-b08a-6fbce5df5c5e\"\
                     ,\r\n  \"displayedName\" : \"My Project\",\r\n  \"description\"\
-                    \ : \"108506c3-c7f8-4265-9bdd-971be4f7e3ec\"\r\n}"
+                    \ : \"top secret\"\r\n}"
     delete:
       tags:
       - tenant
@@ -180,21 +198,21 @@ paths:
               $ref: '#/components/schemas/tenant-name-379992567'
             examples:
               tenants/update-tenant:
-                value: "{\r\n  \"name\" : \"5e5388e3-7fc8-4d7c-921e-ba80c6cb0bea\"\
+                value: "{\r\n  \"name\" : \"701e6d45-f3c5-477e-b9be-11f46a05767e\"\
                   ,\r\n  \"displayedName\" : \"Updated Tenant\",\r\n  \"description\"\
-                  \ : \"73ebca60-08d0-4dce-9cb6-638d464b2f38\"\r\n}"
+                  \ : \"top secret\"\r\n}"
       responses:
         200:
           description: "200"
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/tenant-name-1072526318'
+                $ref: '#/components/schemas/tenant-1072526318'
               examples:
                 tenants/update-tenant:
-                  value: "{\r\n  \"name\" : \"24c369ff-4924-4ebf-92fc-0c556d226f1a\"\
+                  value: "{\r\n  \"name\" : \"701e6d45-f3c5-477e-b9be-11f46a05767e\"\
                     ,\r\n  \"displayedName\" : \"Updated Tenant\",\r\n  \"description\"\
-                    \ : \"73ebca60-08d0-4dce-9cb6-638d464b2f38\"\r\n}"
+                    \ : \"top secret\"\r\n}"
   /user:
     get:
       tags:
@@ -216,22 +234,22 @@ paths:
                 $ref: '#/components/schemas/user-id-tenant-811771042'
               examples:
                 users/get-tenant-assignments:
-                  value: "[ {\r\n  \"tenant\" : \"29c223be-55d6-4885-80ee-af93b195afd0\"\
-                    ,\r\n  \"user\" : {\r\n    \"id\" : \"a43c5ad9-1bf0-4158-917f-6209c57066ec\"\
-                    ,\r\n    \"email\" : \"1fd85ab2-470a-49f3-b7a9-f6cc7076a889@mail\"\
-                    ,\r\n    \"firstName\" : \"Naqpdjhwrf\",\r\n    \"lastName\" :\
-                    \ \"Kvejkfodpl\",\r\n    \"credential\" : \"*****\"\r\n  },\r\n\
+                  value: "[ {\r\n  \"tenant\" : \"be762142-af19-4893-9ee2-2085daf00b5d\"\
+                    ,\r\n  \"user\" : {\r\n    \"id\" : \"85949e64-ea73-4fd4-b719-d6ca953b0a4c\"\
+                    ,\r\n    \"email\" : \"910ffa43-9c16-45c5-bc95-f9605f0c6040@mail\"\
+                    ,\r\n    \"firstName\" : \"Mubzseepkk\",\r\n    \"lastName\" :\
+                    \ \"Bpizqnhvmb\",\r\n    \"credential\" : \"*****\"\r\n  },\r\n\
                     \  \"roles\" : [ \"developer\" ]\r\n}, {\r\n  \"tenant\" : \"\
-                    29c223be-55d6-4885-80ee-af93b195afd0\",\r\n  \"user\" : {\r\n\
-                    \    \"id\" : \"430a57c9-5c2d-4f1d-9177-44b87342227e\",\r\n  \
-                    \  \"email\" : \"d0552911-c1fe-4c9a-935d-769efc15e62c@mail\",\r\
-                    \n    \"firstName\" : \"Qreptuxfym\",\r\n    \"lastName\" : \"\
-                    Egeexypimq\",\r\n    \"credential\" : \"*****\"\r\n  },\r\n  \"\
-                    roles\" : [ \"developer\" ]\r\n}, {\r\n  \"tenant\" : \"29c223be-55d6-4885-80ee-af93b195afd0\"\
-                    ,\r\n  \"user\" : {\r\n    \"id\" : \"e4c2ec91-d53c-41ed-8e20-b10fe4fe9296\"\
-                    ,\r\n    \"email\" : \"c9064dc1-94ee-4d4a-b8be-f533259b5d3f@mail\"\
-                    ,\r\n    \"firstName\" : \"Fxjwrwvnti\",\r\n    \"lastName\" :\
-                    \ \"Addmbjkmnb\",\r\n    \"credential\" : \"*****\"\r\n  },\r\n\
+                    be762142-af19-4893-9ee2-2085daf00b5d\",\r\n  \"user\" : {\r\n\
+                    \    \"id\" : \"9d29b903-7458-4e0d-8a8e-459bd537a61d\",\r\n  \
+                    \  \"email\" : \"8faa25f4-743a-49b4-8ee2-6dd5824385e8@mail\",\r\
+                    \n    \"firstName\" : \"Zviylqwofl\",\r\n    \"lastName\" : \"\
+                    Fdybyjlxom\",\r\n    \"credential\" : \"*****\"\r\n  },\r\n  \"\
+                    roles\" : [ \"developer\" ]\r\n}, {\r\n  \"tenant\" : \"be762142-af19-4893-9ee2-2085daf00b5d\"\
+                    ,\r\n  \"user\" : {\r\n    \"id\" : \"c0a0e5e3-bc60-4755-af3f-3e3a361fedc8\"\
+                    ,\r\n    \"email\" : \"417ee76a-b719-4d60-9919-6c104250534f@mail\"\
+                    ,\r\n    \"firstName\" : \"Lnforsqkop\",\r\n    \"lastName\" :\
+                    \ \"Gzdiyzipjh\",\r\n    \"credential\" : \"*****\"\r\n  },\r\n\
                     \  \"roles\" : [ \"developer\" ]\r\n} ]"
     post:
       tags:
@@ -244,7 +262,7 @@ paths:
               $ref: '#/components/schemas/user888266858'
             examples:
               users/post-user:
-                value: "{\r\n  \"id\" : \"708ba5ae-3080-4ec1-a402-5f9d5425b8b8\",\r\
+                value: "{\r\n  \"id\" : \"6341e7f5-ab7c-48fe-a1f6-c5d56b3d3732\",\r\
                   \n  \"email\" : \"jedi@mail\",\r\n  \"firstName\" : \"Obi-Wan\"\
                   ,\r\n  \"lastName\" : \"Kenobi\",\r\n  \"credential\" : \"TheForce\"\
                   \r\n}"
@@ -257,7 +275,7 @@ paths:
                 $ref: '#/components/schemas/user-id1717187775'
               examples:
                 users/post-user:
-                  value: "{\r\n  \"id\" : \"52514bd0-f3df-49bf-82d6-bc529f3ba5ed\"\
+                  value: "{\r\n  \"id\" : \"69416163-b317-4264-8d5f-35a39f0e7931\"\
                     ,\r\n  \"email\" : \"jedi@mail\",\r\n  \"firstName\" : \"Obi-Wan\"\
                     ,\r\n  \"lastName\" : \"Kenobi\",\r\n  \"credential\" : \"*****\"\
                     \r\n}"
@@ -265,8 +283,14 @@ paths:
     get:
       tags:
       - user
-      operationId: users/search-by-all
+      operationId: users/search-by-string
       parameters:
+      - name: searchingString
+        in: query
+        description: Username of the user
+        required: true
+        schema:
+          type: string
       - name: firstName
         in: query
         description: First name of the user
@@ -291,12 +315,6 @@ paths:
         required: true
         schema:
           type: string
-      - name: searchingString
-        in: query
-        description: Username of the user
-        required: true
-        schema:
-          type: string
       responses:
         200:
           description: "200"
@@ -305,18 +323,18 @@ paths:
               schema:
                 $ref: '#/components/schemas/user-search651500603'
               examples:
-                users/search-by-all:
-                  value: "[ {\r\n  \"id\" : \"3207768c-4389-43de-bb93-fb8d43f66527\"\
-                    ,\r\n  \"email\" : \"9e8adb66-eef4-487c-980d-eb77226dd378@mail\"\
+                users/search-by-string:
+                  value: "[ {\r\n  \"id\" : \"8f837cfc-8fd6-446e-b4ab-52eeda2d430f\"\
+                    ,\r\n  \"email\" : \"5c5a1808-a026-41ee-a2ea-5b8ac0717b0c@mail\"\
+                    ,\r\n  \"firstName\" : \"Fon\",\r\n  \"lastName\" : \"Ner\",\r\
+                    \n  \"credential\" : \"*****\"\r\n}, {\r\n  \"id\" : \"117bdbc9-e258-4bb3-80d8-78f20231f5d3\"\
+                    ,\r\n  \"email\" : \"d3c904f3-8d1b-4535-8780-d3412e05dfae@mail\"\
                     ,\r\n  \"firstName\" : \"Ner\",\r\n  \"lastName\" : \"Zhul\",\r\
                     \n  \"credential\" : \"*****\"\r\n} ]"
-                users/search-by-string:
-                  value: "[ {\r\n  \"id\" : \"fa2fa318-c154-4fc4-af1b-b60134640d45\"\
-                    ,\r\n  \"email\" : \"7c19d6e1-ebff-4dd1-90c8-a1d84061f2d1@mail\"\
+                users/search-by-all:
+                  value: "[ {\r\n  \"id\" : \"d68908fe-8286-4e6d-89e9-b2c4ae02bcef\"\
+                    ,\r\n  \"email\" : \"e7a6fe46-632d-4b72-874e-5b9a5585b265@mail\"\
                     ,\r\n  \"firstName\" : \"Ner\",\r\n  \"lastName\" : \"Zhul\",\r\
-                    \n  \"credential\" : \"*****\"\r\n}, {\r\n  \"id\" : \"e4482e09-333e-4f3d-8988-c7102dcbb1b5\"\
-                    ,\r\n  \"email\" : \"e6ce69dd-84ab-4a08-b0fe-dad091a4625b@mail\"\
-                    ,\r\n  \"firstName\" : \"Fon\",\r\n  \"lastName\" : \"Ner\",\r\
                     \n  \"credential\" : \"*****\"\r\n} ]"
   /user/{id}:
     get:
@@ -339,10 +357,10 @@ paths:
                 $ref: '#/components/schemas/user-id1717187775'
               examples:
                 users/get-user:
-                  value: "{\r\n  \"id\" : \"83bce94d-c177-412b-bdb1-795960cf88f5\"\
-                    ,\r\n  \"email\" : \"b31c27d2-81c5-4ce7-8904-5ff27ff032e0@mail\"\
-                    ,\r\n  \"firstName\" : \"Hpxbwjqehy\",\r\n  \"lastName\" : \"\
-                    Yxlwtiflek\",\r\n  \"credential\" : \"*****\"\r\n}"
+                  value: "{\r\n  \"id\" : \"9220a940-aeac-46f3-902b-a8791b34cce5\"\
+                    ,\r\n  \"email\" : \"cfdc17e1-4c60-4a4a-933e-b830f3175bb1@mail\"\
+                    ,\r\n  \"firstName\" : \"Gqlusvejlf\",\r\n  \"lastName\" : \"\
+                    Fresqfsknn\",\r\n  \"credential\" : \"*****\"\r\n}"
     delete:
       tags:
       - user
@@ -378,18 +396,18 @@ paths:
                 $ref: '#/components/schemas/user-id-tenant-811771042'
               examples:
                 users/get-user-assignments:
-                  value: "[ {\r\n  \"tenant\" : \"f0ed269b-5ffd-44a8-8b4f-4d0a2d4d6557\"\
-                    ,\r\n  \"user\" : {\r\n    \"id\" : \"e5026b9c-5186-4f4e-8ecd-21221eb1e0f1\"\
-                    ,\r\n    \"email\" : \"4092d9c2-a312-4f2a-80e3-a676d8a06ae5@mail\"\
-                    ,\r\n    \"firstName\" : \"Lmscsretmr\",\r\n    \"lastName\" :\
-                    \ \"Bqgfzrdfsa\",\r\n    \"credential\" : \"*****\"\r\n  },\r\n\
-                    \  \"roles\" : [ \"developer\" ]\r\n}, {\r\n  \"tenant\" : \"\
-                    056ed1e2-e423-4f1b-a0c2-185a9b1ce190\",\r\n  \"user\" : {\r\n\
-                    \    \"id\" : \"e5026b9c-5186-4f4e-8ecd-21221eb1e0f1\",\r\n  \
-                    \  \"email\" : \"4092d9c2-a312-4f2a-80e3-a676d8a06ae5@mail\",\r\
-                    \n    \"firstName\" : \"Lmscsretmr\",\r\n    \"lastName\" : \"\
-                    Bqgfzrdfsa\",\r\n    \"credential\" : \"*****\"\r\n  },\r\n  \"\
-                    roles\" : [ \"maintainer\", \"developer\" ]\r\n} ]"
+                  value: "[ {\r\n  \"tenant\" : \"adedaaf1-c523-4bc2-aa11-a32bf2e6d2d5\"\
+                    ,\r\n  \"user\" : {\r\n    \"id\" : \"aef42b7e-4063-4fb7-b095-1598583d4909\"\
+                    ,\r\n    \"email\" : \"c9e8cfee-c235-4b6d-99cf-0d052869a42f@mail\"\
+                    ,\r\n    \"firstName\" : \"Chksxeykjf\",\r\n    \"lastName\" :\
+                    \ \"Jgkqcenuij\",\r\n    \"credential\" : \"*****\"\r\n  },\r\n\
+                    \  \"roles\" : [ \"maintainer\", \"developer\" ]\r\n}, {\r\n \
+                    \ \"tenant\" : \"159187b0-aeec-48b8-b584-73e4c00e92c9\",\r\n \
+                    \ \"user\" : {\r\n    \"id\" : \"aef42b7e-4063-4fb7-b095-1598583d4909\"\
+                    ,\r\n    \"email\" : \"c9e8cfee-c235-4b6d-99cf-0d052869a42f@mail\"\
+                    ,\r\n    \"firstName\" : \"Chksxeykjf\",\r\n    \"lastName\" :\
+                    \ \"Jgkqcenuij\",\r\n    \"credential\" : \"*****\"\r\n  },\r\n\
+                    \  \"roles\" : [ \"developer\" ]\r\n} ]"
   /user/{id}/tenant/{tenant-name}/{role}:
     put:
       tags:
@@ -445,6 +463,18 @@ paths:
           description: "200"
 components:
   schemas:
+    tenant-1072526318:
+      type: object
+      properties:
+        displayedName:
+          type: string
+          description: Displayed name of tenant
+        name:
+          type: string
+          description: Name of tenant
+        description:
+          type: string
+          description: Description
     tenant-name-379992567:
       type: object
       properties:
@@ -454,18 +484,6 @@ components:
         name:
           type: string
           description: Name of tenant (is ignored)
-        description:
-          type: string
-          description: Description
-    tenant-name-1072526318:
-      type: object
-      properties:
-        displayedName:
-          type: string
-          description: Displayed name of tenant
-        name:
-          type: string
-          description: Name of tenant
         description:
           type: string
           description: Description
@@ -490,6 +508,15 @@ components:
             type: string
             description: Name of tenant
         description: Tenant list
+    role1199510443:
+      type: array
+      items:
+        type: object
+        properties:
+          name:
+            type: string
+            description: Name
+        description: Role Template List
     user-id1717187775:
       type: object
       properties:
@@ -508,21 +535,6 @@ components:
         email:
           type: string
           description: Email of user
-    tenant-625772535:
-      type: array
-      items:
-        type: object
-        properties:
-          displayedName:
-            type: string
-            description: Displayed name of tenant
-          name:
-            type: string
-            description: Name of tenant
-          description:
-            type: string
-            description: Description
-        description: Tenant list
     context-1041425929:
       type: object
       properties:
@@ -538,6 +550,21 @@ components:
         user:
           type: object
           description: User entity
+    tenant-625772535:
+      type: array
+      items:
+        type: object
+        properties:
+          displayedName:
+            type: string
+            description: Displayed name of tenant
+          name:
+            type: string
+            description: Name of tenant
+          description:
+            type: string
+            description: Description
+        description: Tenant list
     user888266858:
       type: object
       properties:

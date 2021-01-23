@@ -17,7 +17,7 @@ import org.izmaylovalexey.entities.User
 import org.izmaylovalexey.services.Error
 import org.izmaylovalexey.services.Failure
 import org.izmaylovalexey.services.Result
-import org.izmaylovalexey.services.RoleTemplate
+import org.izmaylovalexey.services.RoleTemplateService
 import org.izmaylovalexey.services.Success
 import org.izmaylovalexey.services.UserService
 import org.izmaylovalexey.services.toFailure
@@ -31,13 +31,13 @@ import javax.ws.rs.NotFoundException
 internal class KeycloakUser(
     private val keycloak: Keycloak,
     keycloakProperties: KeycloakProperties,
-    private val roleTemplate: RoleTemplate
+    private val roleTemplateService: RoleTemplateService
 ) : UserService {
 
     private val realm = keycloakProperties.realm
 
     override suspend fun list(tenant: String) =
-        roleTemplate.all()
+        roleTemplateService.all()
             .flatMapConcat { role ->
                 keycloak.realm(realm)
                     .roles()

@@ -25,7 +25,7 @@ import org.izmaylovalexey.services.Error
 import org.izmaylovalexey.services.Failure
 import org.izmaylovalexey.services.Result
 import org.izmaylovalexey.services.RoleService
-import org.izmaylovalexey.services.RoleTemplate
+import org.izmaylovalexey.services.RoleTemplateService
 import org.izmaylovalexey.services.Success
 import org.izmaylovalexey.services.TenantService
 import org.izmaylovalexey.services.toFailure
@@ -39,7 +39,7 @@ internal class KeycloakTenant(
     private val keycloak: Keycloak,
     keycloakProperties: KeycloakProperties,
     private val roleServices: Collection<RoleService>,
-    private val roleTemplate: RoleTemplate,
+    private val roleTemplateService: RoleTemplateService,
     private val mongoClient: MongoClient
 ) : TenantService {
 
@@ -73,7 +73,7 @@ internal class KeycloakTenant(
             displayedName = tenant.displayedName,
             description = tenant.description
         )
-        roleTemplate.all()
+        roleTemplateService.all()
             .flatMapMerge { role ->
                 coroutineScope {
                     roleServices
@@ -141,7 +141,7 @@ internal class KeycloakTenant(
                 // TODO use DBaaS
                 mongoClient.getDatabase(name).drop().asFlow().collect()
             }
-            roleTemplate.all()
+            roleTemplateService.all()
                 .map { role ->
                     roleServices
                         .map {
