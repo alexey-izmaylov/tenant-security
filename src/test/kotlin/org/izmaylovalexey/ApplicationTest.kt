@@ -18,7 +18,6 @@ import org.springframework.test.web.reactive.server.WebTestClient
 import org.springframework.test.web.reactive.server.expectBody
 import org.testcontainers.containers.GenericContainer
 import org.testcontainers.containers.wait.strategy.HttpWaitStrategy
-import org.testcontainers.lifecycle.Startable
 import org.testcontainers.lifecycle.Startables
 import java.net.ServerSocket
 import java.time.Duration
@@ -49,7 +48,7 @@ class ApplicationTest {
         }
 
         init {
-            Startables.deepStart(Stream.of<Startable>(mongo, keycloak)).join()
+            Startables.deepStart(Stream.of(mongo, keycloak)).join()
         }
     }
 

@@ -1,4 +1,4 @@
-[![simple build status](https://github.com/alexey-izmaylov/tenant-security/workflows/build/badge.svg)](https://github.com/alexey-izmaylov/tenant-security/actions?query=workflow%3A%22build%22)
+[![simple build status](https://github.com/alexey-izmaylov/tenant-security/workflows/build/badge.svg)](https://github.com/alexey-izmaylov/tenant-security/actions?query=workflow%3Abuild)
 
 # Tenant Security
 Microservice handles role-based access control (RBAC) policies for multi-tenant environment.
