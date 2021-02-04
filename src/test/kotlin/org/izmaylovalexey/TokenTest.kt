@@ -50,7 +50,6 @@ import org.springframework.test.context.TestConstructor
 import org.springframework.test.web.reactive.server.WebTestClient
 import org.springframework.test.web.reactive.server.body
 import org.springframework.test.web.reactive.server.expectBody
-import org.testcontainers.junit.jupiter.Testcontainers
 import reactor.core.publisher.Hooks
 import reactor.core.publisher.Mono
 import java.time.Duration
@@ -59,7 +58,6 @@ import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 
 @AutoConfigureRestDocs
-@Testcontainers
 @ContextConfiguration(initializers = [ApplicationTest.PropertyOverrideContextInitializer::class])
 @TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
 @SpringBootTest

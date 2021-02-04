@@ -37,7 +37,6 @@ import org.springframework.test.web.reactive.server.body
 import org.springframework.test.web.reactive.server.expectBody
 import org.springframework.test.web.reactive.server.expectBodyList
 import org.springframework.test.web.reactive.server.returnResult
-import org.testcontainers.junit.jupiter.Testcontainers
 import reactor.core.publisher.Hooks
 import reactor.core.publisher.Mono
 import java.time.Duration
@@ -48,7 +47,6 @@ import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 
 @AutoConfigureRestDocs
-@Testcontainers
 @ContextConfiguration(initializers = [ApplicationTest.PropertyOverrideContextInitializer::class])
 @TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
 @SpringBootTest
