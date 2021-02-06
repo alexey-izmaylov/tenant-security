@@ -12,7 +12,7 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <kotlin.version>1.4.10</kotlin.version>
+    <kotlin.version>1.4.30</kotlin.version>
     <kotlin.code.style>official</kotlin.code.style>
     <java.version>11</java.version>
   </properties>
@@ -20,7 +20,7 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>2.2.10.RELEASE</version>
+    <version>2.2.13.RELEASE</version>
   </parent>
 
   <dependencies>
@@ -41,7 +41,7 @@
     <dependency>
       <groupId>com.fasterxml.jackson.module</groupId>
       <artifactId>jackson-module-kotlin</artifactId>
-      <version>2.11.3</version>
+      <version>2.12.1</version>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -66,7 +66,7 @@
     <dependency>
       <groupId>io.github.microutils</groupId>
       <artifactId>kotlin-logging-jvm</artifactId>
-      <version>2.0.3</version>
+      <version>2.0.4</version>
     </dependency>
     <dependency>
       <groupId>ch.qos.logback</groupId>
@@ -76,17 +76,7 @@
     <dependency>
       <groupId>org.springframework.cloud</groupId>
       <artifactId>spring-cloud-kubernetes-istio</artifactId>
-      <version>1.1.6.RELEASE</version>
-    </dependency>
-    <dependency>
-      <groupId>me.snowdrop</groupId>
-      <artifactId>istio-client</artifactId>
-      <version>1.1.1</version>
-    </dependency>
-    <dependency>
-      <groupId>io.fabric8</groupId>
-      <artifactId>kubernetes-client</artifactId>
-      <version>4.6.2</version>
+      <version>1.1.7.RELEASE</version>
     </dependency>
     <dependency>
       <groupId>org.keycloak</groupId>
@@ -96,7 +86,7 @@
     <dependency>
       <groupId>com.auth0</groupId>
       <artifactId>java-jwt</artifactId>
-      <version>3.11.0</version>
+      <version>3.12.1</version>
     </dependency>
 
     <dependency>
@@ -108,7 +98,7 @@
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter</artifactId>
-      <version>5.7.0</version>
+      <version>5.7.1</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -142,20 +132,30 @@
     <dependency>
       <groupId>io.fabric8</groupId>
       <artifactId>kubernetes-server-mock</artifactId>
-      <version>4.10.3</version>
+      <version>5.0.1</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.epages</groupId>
       <artifactId>restdocs-api-spec-webtestclient</artifactId>
-      <version>0.10.0</version>
+      <version>0.10.3</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
   <dependencyManagement>
     <dependencies>
       <dependency>
-<!--        https://github.com/testcontainers/testcontainers-java/issues/3308-->
+        <groupId>me.snowdrop</groupId>
+        <artifactId>istio-client</artifactId>
+        <version>1.1.1</version>
+      </dependency>
+      <dependency>
+        <groupId>io.fabric8</groupId>
+        <artifactId>kubernetes-client</artifactId>
+        <version>4.6.2</version>
+      </dependency>
+      <dependency>
+        <!--https://github.com/testcontainers/testcontainers-java/issues/3308-->
         <groupId>net.java.dev.jna</groupId>
         <artifactId>jna</artifactId>
         <version>5.6.0</version>
@@ -165,11 +165,19 @@
 
   <repositories>
     <repository>
+      <id>central</id>
+      <url>https://repo1.maven.org/maven2</url>
+    </repository>
+    <repository>
       <id>jcenter</id>
       <url>https://jcenter.bintray.com/</url>
     </repository>
   </repositories>
   <pluginRepositories>
+    <pluginRepository>
+      <id>central</id>
+      <url>https://repo1.maven.org/maven2</url>
+    </pluginRepository>
     <pluginRepository>
       <id>jcenter</id>
       <url>https://jcenter.bintray.com</url>
@@ -259,7 +267,7 @@
       <plugin>
         <groupId>com.github.berkleytechnologyservices.restdocs-spec</groupId>
         <artifactId>restdocs-spec-maven-plugin</artifactId>
-        <version>0.18</version>
+        <version>0.19</version>
         <executions>
           <execution>
             <goals>
@@ -274,7 +282,7 @@
       <plugin>
         <groupId>com.github.gantsign.maven</groupId>
         <artifactId>ktlint-maven-plugin</artifactId>
-        <version>1.6.1</version>
+        <version>1.7.0</version>
         <executions>
           <execution>
             <id>format-and-check</id>
@@ -288,7 +296,7 @@
       <plugin>
         <groupId>org.owasp</groupId>
         <artifactId>dependency-check-maven</artifactId>
-        <version>6.0.2</version>
+        <version>6.1.0</version>
         <executions>
           <execution>
             <goals>
