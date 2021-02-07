@@ -7,20 +7,23 @@ The microservice handles role-based access control (RBAC) policies for multi-ten
 ## Architecture
 
 Tenant is a resource group.
+
 In case of HTTP, gRPC services it signifies different hosts,
 paths (`/tenant/{name}/*`,`*/tenant/{name}/sample/path`),
 methods (`GET`, `PUT`, `DELETE`), etc.
-It conforms with REST.
+It conforms to REST.
 
-Certainly, resource group requires security.
-Several roles can be related to one tenant:
-to create, modify one resource, and to only read others.
+Certainly, tenant requires security.
+Several roles can be related to resource group:
+to create or modify one resource and to only read others.
 
 Tenant-security allows to:
 
 1. create the tenant having set of roles
 2. create user
 3. assign user to tenant with the specific role.
+
+![service-integration.puml](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://github.com/alexey-izmaylov/tenant-security/raw/master/docs/service-integration.puml)
 
 All communications pass through Istio sidecars validating JSON Web Tokens.
 JWTs are forged by Keycloak identity provider.
@@ -30,21 +33,22 @@ when user tries to access tenant resource.
 This microservice builds all necessary entities under the hood.
 Tenant is represented as:
 
-- Istio Role (many)
+- Istio ServiceRole (many)
+- Istio ServiceRoleBinding (many)
 - Keycloak Role (many)
 - Keycloak Group (one).
 
 Each tenant has the same set of granular roles (at least one).
-To create these roles, service has to use templates declared by application operator.
-Istio Roles should be marked by `type=tenant-template` label.
-It can also contain `{tenant}` in path strings which will be replaced by actual tenant name.
+To create these roles tenant-security has to use ServiceRole marked with `type=tenant-template` label as template.
+Such templates should be defined by application operator.
+Template can also contain `{tenant}` in path strings which will be replaced by actual tenant name.
 
 ### Application start
 
-At the start application
+During the initialization tenant-security
 
-- loads available Istio roles or default [ServiceRole.yaml](src/main/resources/ServiceRole.yaml)
-- creates realm, client in Keycloak
+- loads available Istio ServiceRole templates or default [ServiceRole.yaml](src/main/resources/ServiceRole.yaml)
+- creates the realm, client in Keycloak
 - configures Keycloak to include user roles into token
 - optionally creates initial user and role in Keycloak.
 
@@ -57,7 +61,7 @@ Future improvements can bring more flexible solutions:
 3. Gateway with authentication/authorization and identity provider
 4. Test mocks.
 
-Every mode can be defined by Spring profile.
+Every mode can be declared by Spring profile.
 It consists of necessary service beans.
 Each service operation leads to stream processing of corresponding beans.
 Spring finds interface implementations for selected profile and injects them into collections.

@@ -1,0 +1,26 @@
+@startuml
+
+skinparam roundCorner 10
+
+actor User
+rectangle Resource
+rectangle Sidecar as "Istio Sidecar"
+rectangle Kubernetes as "Kubernetes and Istio API"
+rectangle Keycloak
+rectangle TenantSecurity as "Tenant Security"
+actor Operator
+
+User --> Keycloak : get token
+User --> Sidecar : request resource
+Sidecar ---> Kubernetes : load policies
+Sidecar --> Keycloak : validate token
+Sidecar --> Resource : authorize or not
+
+User --> TenantSecurity : create tenant
+TenantSecurity --> Kubernetes : create tenant specific role
+TenantSecurity --> Kubernetes : get role templates
+TenantSecurity --> Keycloak : create tenant specific role
+
+Operator --> Kubernetes : create role templates
+
+@enduml
