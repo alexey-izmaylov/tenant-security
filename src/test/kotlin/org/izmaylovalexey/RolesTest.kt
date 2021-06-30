@@ -19,7 +19,7 @@ import org.springframework.test.web.reactive.server.WebTestClient
 import org.springframework.test.web.reactive.server.expectBodyList
 
 @AutoConfigureRestDocs
-@ContextConfiguration(initializers = [ApplicationTest.PropertyOverrideContextInitializer::class])
+@ContextConfiguration(initializers = [Integration.SpringInitializer::class])
 @TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
 @SpringBootTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)

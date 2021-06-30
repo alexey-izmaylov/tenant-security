@@ -1,0 +1,9 @@
+keycloak:
+  realm: ${KEYCLOAK_REALM:test}
+  client: ${KEYCLOAK_CLIENT:frontend}
+
+initial:
+  user:
+    email: ${INIT_USER_EMAIL:operator@email}
+    password: ${INIT_USER_PASSWORD:12345}
+    role: ${INIT_USER_ROLE:operator}

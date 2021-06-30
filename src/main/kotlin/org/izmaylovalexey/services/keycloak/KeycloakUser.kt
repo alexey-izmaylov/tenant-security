@@ -24,10 +24,8 @@ import org.izmaylovalexey.services.toFailure
 import org.keycloak.admin.client.Keycloak
 import org.keycloak.representations.idm.CredentialRepresentation
 import org.keycloak.representations.idm.UserRepresentation
-import org.springframework.stereotype.Service
 import javax.ws.rs.NotFoundException
 
-@Service
 internal class KeycloakUser(
     private val keycloak: Keycloak,
     keycloakProperties: KeycloakProperties,

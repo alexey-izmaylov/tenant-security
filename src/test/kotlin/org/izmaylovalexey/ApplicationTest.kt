@@ -2,67 +2,19 @@ package org.izmaylovalexey
 
 import mu.KLogging
 import org.awaitility.Awaitility
-import org.izmaylovalexey.services.Error
-import org.izmaylovalexey.services.Failure
-import org.izmaylovalexey.services.Result
-import org.izmaylovalexey.services.Success
+import org.izmaylovalexey.Integration.keycloak
+import org.izmaylovalexey.Integration.mongo
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
-import org.junit.jupiter.api.fail
-import org.springframework.context.ApplicationContextInitializer
-import org.springframework.context.ConfigurableApplicationContext
-import org.springframework.test.context.support.TestPropertySourceUtils
 import org.springframework.test.web.reactive.server.WebTestClient
 import org.springframework.test.web.reactive.server.expectBody
-import org.testcontainers.containers.GenericContainer
-import org.testcontainers.containers.wait.strategy.HttpWaitStrategy
-import org.testcontainers.lifecycle.Startables
 import java.net.ServerSocket
 import java.time.Duration
-import java.util.stream.Stream
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class ApplicationTest {
-
-    private companion object : KLogging() {
-
-        private val registry: String = System.getProperty("registry", "")
-
-        val mongo = GenericContainer<Nothing>("${registry}mongo:4.2.6").apply {
-            withExposedPorts(27017)
-        }
-
-        val keycloak = GenericContainer<Nothing>("${registry}jboss/keycloak:10.0.1").apply {
-            withExposedPorts(8080)
-            withEnv("DB_VENDOR", "h2")
-            withEnv("KEYCLOAK_USER", "keycloak")
-            withEnv("KEYCLOAK_PASSWORD", "keycloak")
-            waitingFor(
-                HttpWaitStrategy()
-                    .forPath("/auth/")
-                    .forStatusCode(200)
-                    .withStartupTimeout(Duration.ofMinutes(5))
-            )
-        }
-
-        init {
-            Startables.deepStart(Stream.of(mongo, keycloak)).join()
-        }
-    }
-
-    class PropertyOverrideContextInitializer : ApplicationContextInitializer<ConfigurableApplicationContext> {
-
-        override fun initialize(applicationContext: ConfigurableApplicationContext) {
-            TestPropertySourceUtils.addInlinedPropertiesToEnvironment(
-                applicationContext,
-                "spring.data.mongodb.uri=mongodb://${mongo.containerIpAddress}:${mongo.firstMappedPort}/tenant-security",
-                "keycloak.uri=http://${keycloak.containerIpAddress}:${keycloak.firstMappedPort}/auth",
-                "keycloak.password=keycloak"
-            )
-        }
-    }
 
     private val port = 8080
     private val client = WebTestClient.bindToServer().baseUrl("http://localhost:$port").build()
@@ -83,6 +35,7 @@ class ApplicationTest {
     fun start() {
         main(
             arrayOf(
+                "--spring.profiles.active=test",
                 "--server.port=$port",
                 "--spring.data.mongodb.uri=mongodb://${mongo.containerIpAddress}:${mongo.firstMappedPort}/tenant-security",
                 "--keycloak.uri=http://${keycloak.containerIpAddress}:${keycloak.firstMappedPort}/auth",
@@ -119,13 +72,6 @@ class ApplicationTest {
             .exchange()
             .expectStatus().isOk
     }
-}
 
-fun <T> Result<T>.unwrap(): T = when (this) {
-    is Success -> value
-    is Failure -> when (error) {
-        is Error.Exception -> fail(error.exception)
-        is Error.Message -> fail(error.message)
-        else -> fail(error::class.simpleName)
-    }
+    private companion object : KLogging()
 }

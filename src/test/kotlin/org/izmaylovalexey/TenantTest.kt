@@ -40,7 +40,7 @@ import kotlin.test.assertNotNull
 import kotlin.test.fail
 
 @AutoConfigureRestDocs
-@ContextConfiguration(initializers = [ApplicationTest.PropertyOverrideContextInitializer::class])
+@ContextConfiguration(initializers = [Integration.SpringInitializer::class])
 @TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
 @SpringBootTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)

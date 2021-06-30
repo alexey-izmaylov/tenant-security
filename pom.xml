@@ -12,7 +12,7 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <kotlin.version>1.4.30</kotlin.version>
+    <kotlin.version>1.5.10</kotlin.version>
     <kotlin.code.style>official</kotlin.code.style>
     <java.version>11</java.version>
   </properties>
@@ -20,7 +20,7 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>2.2.13.RELEASE</version>
+    <version>2.5.2</version>
   </parent>
 
   <dependencies>
@@ -41,7 +41,7 @@
     <dependency>
       <groupId>com.fasterxml.jackson.module</groupId>
       <artifactId>jackson-module-kotlin</artifactId>
-      <version>2.12.1</version>
+      <version>2.12.3</version>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -66,7 +66,7 @@
     <dependency>
       <groupId>io.github.microutils</groupId>
       <artifactId>kotlin-logging-jvm</artifactId>
-      <version>2.0.4</version>
+      <version>2.0.8</version>
     </dependency>
     <dependency>
       <groupId>ch.qos.logback</groupId>
@@ -76,7 +76,7 @@
     <dependency>
       <groupId>org.springframework.cloud</groupId>
       <artifactId>spring-cloud-kubernetes-istio</artifactId>
-      <version>1.1.7.RELEASE</version>
+      <version>1.1.9.RELEASE</version>
     </dependency>
     <dependency>
       <groupId>org.keycloak</groupId>
@@ -86,7 +86,7 @@
     <dependency>
       <groupId>com.auth0</groupId>
       <artifactId>java-jwt</artifactId>
-      <version>3.12.1</version>
+      <version>3.17.0</version>
     </dependency>
 
     <dependency>
@@ -98,13 +98,13 @@
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter</artifactId>
-      <version>5.7.1</version>
+      <version>5.7.2</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.testcontainers</groupId>
       <artifactId>testcontainers</artifactId>
-      <version>1.15.1</version>
+      <version>1.15.3</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -126,19 +126,19 @@
     <dependency>
       <groupId>org.awaitility</groupId>
       <artifactId>awaitility-kotlin</artifactId>
-      <version>4.0.3</version>
+      <version>4.1.0</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>io.fabric8</groupId>
       <artifactId>kubernetes-server-mock</artifactId>
-      <version>5.0.1</version>
+      <version>5.4.1</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.epages</groupId>
       <artifactId>restdocs-api-spec-webtestclient</artifactId>
-      <version>0.10.3</version>
+      <version>0.11.4</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -155,10 +155,15 @@
         <version>4.6.2</version>
       </dependency>
       <dependency>
-        <!--https://github.com/testcontainers/testcontainers-java/issues/3308-->
+        <!-- https://github.com/testcontainers/testcontainers-java/issues/3308 -->
         <groupId>net.java.dev.jna</groupId>
         <artifactId>jna</artifactId>
         <version>5.6.0</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-context</artifactId>
+        <version>3.0.3</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
@@ -212,6 +217,7 @@
           <jvmTarget>${java.version}</jvmTarget>
           <args>
             <arg>-Xjsr305=strict</arg>
+            <arg>-Xuse-ir</arg>
           </args>
           <compilerPlugins>
             <plugin>spring</plugin>
@@ -265,9 +271,9 @@
         </dependencies>
       </plugin>
       <plugin>
-        <groupId>com.github.berkleytechnologyservices.restdocs-spec</groupId>
+        <groupId>io.github.berkleytechnologyservices</groupId>
         <artifactId>restdocs-spec-maven-plugin</artifactId>
-        <version>0.19</version>
+        <version>0.21</version>
         <executions>
           <execution>
             <goals>
@@ -282,7 +288,7 @@
       <plugin>
         <groupId>com.github.gantsign.maven</groupId>
         <artifactId>ktlint-maven-plugin</artifactId>
-        <version>1.7.0</version>
+        <version>1.9.0</version>
         <executions>
           <execution>
             <id>format-and-check</id>
@@ -296,7 +302,7 @@
       <plugin>
         <groupId>org.owasp</groupId>
         <artifactId>dependency-check-maven</artifactId>
-        <version>6.1.0</version>
+        <version>6.2.2</version>
         <executions>
           <execution>
             <goals>

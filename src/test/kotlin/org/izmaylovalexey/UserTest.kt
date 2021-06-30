@@ -40,14 +40,13 @@ import org.springframework.test.web.reactive.server.returnResult
 import reactor.core.publisher.Hooks
 import reactor.core.publisher.Mono
 import java.time.Duration
-import java.util.HashSet
 import java.util.UUID
 import kotlin.random.Random
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 
 @AutoConfigureRestDocs
-@ContextConfiguration(initializers = [ApplicationTest.PropertyOverrideContextInitializer::class])
+@ContextConfiguration(initializers = [Integration.SpringInitializer::class])
 @TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
 @SpringBootTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)

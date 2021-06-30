@@ -10,9 +10,7 @@ import org.izmaylovalexey.services.Success
 import org.izmaylovalexey.services.toFailure
 import org.keycloak.admin.client.Keycloak
 import org.keycloak.representations.idm.RoleRepresentation
-import org.springframework.stereotype.Service
 
-@Service
 internal class KeycloakRole(val keycloak: Keycloak, keycloakProperties: KeycloakProperties) : RoleService {
 
     private val realm = keycloakProperties.realm

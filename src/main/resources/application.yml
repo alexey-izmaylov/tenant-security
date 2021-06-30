@@ -20,22 +20,13 @@ management:
         enabled: true
 
 spring:
+  profiles:
+    include:
+      - istio
+      - keycloak
   data:
     mongodb:
       uri: ${MONGO_URI:mongodb://localhost:27017/tenant-security}
 
 tenant:
   defaultRole: ${DEFAULT_ROLE:owner}
-
-keycloak:
-  uri: ${KEYCLOAK_URI:http://keycloak-http:80/auth}
-  realm: ${KEYCLOAK_REALM:istio}
-  client: ${KEYCLOAK_CLIENT:frontend}
-  secret: ${KEYCLOAK_SECRET:keycloak-http}
-  secretKey: ${KEYCLOAK_SECRET_KEY:password}
-
-initial:
-  user:
-    email: ${INIT_USER_EMAIL}
-    password: ${INIT_USER_PASSWORD}
-    role: ${INIT_USER_ROLE}
