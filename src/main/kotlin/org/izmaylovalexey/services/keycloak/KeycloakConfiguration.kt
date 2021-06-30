@@ -7,14 +7,10 @@ import org.keycloak.representations.idm.ClientRepresentation
 import org.keycloak.representations.idm.RealmRepresentation
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.boot.context.properties.ConstructorBinding
-import org.springframework.context.annotation.Bean
-import org.springframework.context.annotation.Configuration
 import java.util.Base64
 
-@Configuration
 internal class KeycloakConfiguration {
 
-    @Bean
     fun keycloak(keycloakProperties: KeycloakProperties, kubernetesClient: KubernetesClient): Keycloak {
         logger.info {
             """
@@ -26,13 +22,13 @@ internal class KeycloakConfiguration {
             secretKey=${keycloakProperties.secretKey}
             """.trimIndent()
         }
-        val password = if (keycloakProperties.password.isBlank()) {
+        val password = keycloakProperties.password.ifBlank {
             val base64 = kubernetesClient.secrets()
                 .withName(keycloakProperties.secret)
                 .get()
                 .data[keycloakProperties.secretKey]
             String(Base64.getDecoder().decode(base64))
-        } else keycloakProperties.password
+        }
         val keycloak = Keycloak.getInstance(
             keycloakProperties.uri,
             "master",

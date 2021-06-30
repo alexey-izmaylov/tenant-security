@@ -4,6 +4,11 @@ import org.izmaylovalexey.handler.ContextHandler
 import org.izmaylovalexey.handler.RoleTemplateHandler
 import org.izmaylovalexey.handler.TenantHandler
 import org.izmaylovalexey.handler.UserHandler
+import org.izmaylovalexey.services.istio.IstioRole
+import org.izmaylovalexey.services.keycloak.KeycloakConfiguration
+import org.izmaylovalexey.services.keycloak.KeycloakRole
+import org.izmaylovalexey.services.keycloak.KeycloakTenant
+import org.izmaylovalexey.services.keycloak.KeycloakUser
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan
@@ -27,19 +32,28 @@ class TenantSecurityApplication
 
 fun main(args: Array<String>) {
     runApplication<TenantSecurityApplication>(*args) {
-        addInitializers(
-            beans {
-                bean<TenantHandler>()
-                bean(::tenantRoute)
-                bean<RoleTemplateHandler>()
-                bean(::roleTemplateRoute)
-                bean<UserHandler>()
-                bean(::userRoute)
-                bean<ContextHandler>()
-                bean(::contextRoute)
-                bean { healthRoute() }
-            }
-        )
+        addInitializers(beans())
+    }
+}
+
+internal fun beans() = beans {
+    bean<TenantHandler>()
+    bean(::tenantRoute)
+    bean<RoleTemplateHandler>()
+    bean(::roleTemplateRoute)
+    bean<UserHandler>()
+    bean(::userRoute)
+    bean<ContextHandler>()
+    bean(::contextRoute)
+    bean { healthRoute() }
+    profile("istio") {
+        bean<IstioRole>()
+    }
+    profile("keycloak") {
+        bean { KeycloakConfiguration().keycloak(ref(), ref()) }
+        bean<KeycloakRole>()
+        bean<KeycloakTenant>()
+        bean<KeycloakUser>()
     }
 }
 
