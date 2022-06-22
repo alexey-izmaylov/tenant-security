@@ -152,7 +152,7 @@
       <dependency>
         <groupId>io.fabric8</groupId>
         <artifactId>kubernetes-client</artifactId>
-        <version>4.6.2</version>
+        <version>4.7.2</version>
       </dependency>
       <dependency>
         <!-- https://github.com/testcontainers/testcontainers-java/issues/3308 -->
